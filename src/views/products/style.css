@@ -1,0 +1,30 @@
+.marquee-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+marquee {
+    /* Your styles for the marquee tag */
+    font-size: 18px;
+    color: #333;
+    background-color: #eee;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+
+.img {
+    width: 250px;
+    height: 230px;
+    overflow: hidden;
+}
+
+.img img {
+    object-fit: cover;
+    width: 100%;
+    transition: transform .5s ease-in-out;
+}
+
+.img:hover img {
+    transform: scale(1.5) rotate(0deg);
+}

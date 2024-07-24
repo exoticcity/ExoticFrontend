@@ -1,0 +1,12 @@
+/* Nav_Header */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.text-footer {
+    font-family: "Montserrat", sans-serif;
+}
