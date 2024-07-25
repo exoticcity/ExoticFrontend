@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ItemCard from "./ItemCard";
 import { useTranslation } from 'react-i18next'
 import emailjs from "@emailjs/browser";
-
+ 
 const RequestQuote = () => {
   const { data, loading, setLoading, accessTokenUrl, user, cart, setCart, change, setorderno, setInputQuantity, setIsIncrement, cartData, setCartData } = useContext(Context);
   const navigate = useNavigate();
@@ -22,15 +22,15 @@ const RequestQuote = () => {
   const [vatAmount, setvatAmount] = useState(0)
   const [userObj, setUserObj] = useState({})
   const [acceptTerms, setacceptTerms] = useState(false)
-
-
+ 
+ 
   const [totalPrice, setTotalPrice] = useState(0)
-
+ 
   // GO Back Function
   const handleContinueShopping = () => {
     navigate(-1);
   };
-
+ 
   // useEffect(() => {
   //   const storedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
   //   const itemsArray = Object.values(storedItems).filter(item => item.quantity > 0);
@@ -39,7 +39,7 @@ const RequestQuote = () => {
   //   localStorage.setItem('PriceExVat', '0.0');
   //   localStorage.setItem('VatAmount', '0.0');
   // }, [cart, data]);
-
+ 
   const sendEmail = (orderNumber, customerEmail) => {
     const templateParams = {
       order_number: orderNumber,
@@ -48,7 +48,7 @@ const RequestQuote = () => {
       // add other template parameters as needed
       message: `A new web order is created Order No. is ${orderNumber} and Email is ${customerEmail}`
     };
-
+ 
     emailjs.send('service_1g7imx4', 'template_8uek6dd', templateParams, 'KgNk2-GMoPQOnxjqX')
       .then(response => {
         console.log('Email successfully sent!', response);
@@ -57,7 +57,7 @@ const RequestQuote = () => {
         console.error('Failed to send email. Error: ', err);
       });
   };
-
+ 
   // SALE ORDER API
   const postSalesOrder = () => {
     if (cartData.length === 0) {
@@ -110,7 +110,7 @@ const RequestQuote = () => {
         console.log("Sale order error", error, error.message, error.response.data.error.message);
       });
   };
-
+ 
   // Clear Cart Function
   const clearCart = () => {
     if (cartData.length === 0) {
@@ -126,7 +126,7 @@ const RequestQuote = () => {
       toast.success('Cart cleared successfully!');
     }
   };
-
+ 
   useLayoutEffect(() => {
     const storedSelectedItems = JSON.parse(localStorage.getItem('selectedItems') || '{}');
     const postingGroup = localStorage.getItem('CustomerPriceGroup') || ''
@@ -138,14 +138,14 @@ const RequestQuote = () => {
     if (itemKeys.length === 0) {
       setIsPricesLoading(false);
     }
-
+ 
     itemKeys.forEach(key => {
       const item = storedSelectedItems[key];
       const itemNo = item?.item?.ItemNo;
       const quantity = item?.quantity || 0;
       const vatRate = item?.item?.vat / 100;
       const pg = postingGroup
-
+ 
       axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${itemNo}/${pg}/${quantity}`)
         .then((res) => {
           const priceExcVat = parseFloat(Math.round(res?.data?.price * 100) / 100 || 0);
@@ -156,11 +156,11 @@ const RequestQuote = () => {
           settotalAmoutExcVat(runningTotalAmountExcVat);
           settotalAmoutIncVat(runningTotalAmountIncVat);
           setvatAmount(totalVat);
-
+ 
           itemsProcessed++;
           if (itemsProcessed === itemKeys.length) {
             setIsPricesLoading(false);
-
+ 
           }
         })
         .catch((err) => {
@@ -168,7 +168,7 @@ const RequestQuote = () => {
         });
     });
   }, [change]);
-
+ 
   useEffect(() => {
     axios.get(`https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer?$filter = No eq '${user}'`, {
       headers: {
@@ -180,31 +180,31 @@ const RequestQuote = () => {
       })
       .catch((err) => {
         console.error("Error:", err);
-
+ 
       });
   }, [accessTokenUrl]);
-
+ 
   useEffect(() => {
     // Fetch the stored values from localStorage
     const storedTotalAmoutExcVat = parseFloat(localStorage.getItem('totalAmoutExcVat')) || 0;
     const storedVatAmount = parseFloat(localStorage.getItem('vatAmount')) || 0;
     const storedTotalAmoutIncVat = parseFloat(localStorage.getItem('totalAmoutIncVat')) || 0;
-
+ 
     settotalAmoutExcVat(storedTotalAmoutExcVat);
     setvatAmount(storedVatAmount);
     settotalAmoutIncVat(storedTotalAmoutIncVat);
-
+ 
     // Your existing logic for calculating and updating the state goes here
-
+ 
   }, [change]);
-
+ 
   useEffect(() => {
     // Store the values in localStorage whenever they change
     localStorage.setItem('totalAmoutExcVat', totalAmoutExcVat.toString());
     localStorage.setItem('vatAmount', vatAmount.toString());
     localStorage.setItem('totalAmoutIncVat', totalAmoutIncVat.toString());
   }, [totalAmoutExcVat, vatAmount, totalAmoutIncVat]);
-
+ 
   useEffect(() => {
     const currUserNo = sessionStorage.getItem("user");
     axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/${currUserNo}`)
@@ -214,11 +214,8 @@ const RequestQuote = () => {
       }).catch((err) => {
         console.log(err);
       })
-  }, [cartData])
-
-  
-
-
+  }, [])
+ 
   return (
     <Grid container>
       <Grid item xs={12} md={8}>
@@ -263,8 +260,6 @@ const RequestQuote = () => {
               </>
             ) : ""
           }
-
-
           <Box sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', width: '100%', mt: '20px', gap: '10px' }}>
             <Button variant="contained" size="small" onClick={clearCart} sx={{ display: 'flex', justifyContent: 'space-between', px: '16px', fontSize: '10px', backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }}><DeleteForeverIcon sx={{ fontSize: '14px' }} />{t('Clear Cart')} </Button>
             <Link to='/Ledger' style={{ textDecoration: 'none' }}>
@@ -296,5 +291,5 @@ const RequestQuote = () => {
     </Grid>
   );
 };
-
+ 
 export default RequestQuote;
