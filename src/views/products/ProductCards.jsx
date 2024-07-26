@@ -139,7 +139,7 @@ const ProductCards = ({ item, url, setUrl }) => {
             }).finally(() => {
                 setLoading(false);
             });
-    }, [accessTokenUrl, picture, cartData]);
+    }, [accessTokenUrl, picture, item?.ItemNo]);
  
     // USE-EFFECT
     useEffect(() => {
