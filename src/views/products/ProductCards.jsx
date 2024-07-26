@@ -84,7 +84,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                 const updateCartData = {
                     items_to_update: [{ itemNo: item?.ItemNo, quantity: quantity }],
                 };
-                await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/${currUserNo}/`, updateCartData);
+                await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/update_cart/${currUserNo}/`, updateCartData);
                 toast.success('Cart updated successfully');
  
             }
@@ -93,7 +93,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                 customer: currUserNo,
                 items_in_cart: [{ itemNo: item?.ItemNo, quantity: quantity }],
             }
-            await axios.post('https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/', postData);
+            await axios.post('https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/create_cart/', postData);
             toast.success('Item added to cart successfully');
         } finally {
             setButtonClicked(true);
