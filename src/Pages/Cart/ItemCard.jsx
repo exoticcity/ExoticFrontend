@@ -92,7 +92,7 @@ const ItemCard = ({ items, index }) => {
             items_to_update: [{ itemNo: itemNo, quantity: quantity }],
         };
         try {
-            await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/${user}/`, updateCartData);
+            await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/update_cart/${user}/`, updateCartData);
         } catch (error) {
             console.error("Failed to update cart", error);
             toast.error('Failed to update cart');
@@ -105,7 +105,7 @@ const ItemCard = ({ items, index }) => {
             const updateCartData = {
                 items_to_update: [{ itemNo: items?.product?.ItemNo, quantity: 0 }],
             };
-            await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/${user}/`, updateCartData)
+            await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/update_cart/${user}/`, updateCartData)
                 .then((res) => {
                     toast.success('Item deleted successfully');
                     setCartData(res?.data?.items_in_cart[0]);
