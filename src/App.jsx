@@ -89,8 +89,8 @@ function App() {
   }, [setAccessTokenUrl])
 
   // Parent Categories
-  useEffect(() => {
-    if (accessTokenUrl) {
+  if (accessTokenUrl !== '') {
+    useEffect(() => {
       axios.get(`https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/parentcategory`, {
         headers: {
           Authorization: `Bearer ${accessTokenUrl}`,
@@ -102,8 +102,10 @@ function App() {
         .catch((err) => {
           console.error("Error:", err);
         });
-    }
-  }, [accessTokenUrl]);
+    }, [accessTokenUrl]);
+  } else {
+    console.log("abc");
+  }
 
   // const filteredURL = `${url}?ParentCategory=`
   const handleParentClick = (selectedDescription) => {

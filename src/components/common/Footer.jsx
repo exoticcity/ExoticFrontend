@@ -54,28 +54,28 @@ const Footer = () => {
               <Box sx={{ width: '20%', height: '4px', backgroundColor: 'orange', margin: '8px 0', mb: '30px' }} ></Box>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <Link to='/Legal' style={{ textDecoration: 'none' }}>
-                  <li className="mb-2" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                    <a href="#" className="hover:underline"><ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Legal Notice')}</a>
+                  <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
+                    <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Legal Notice')}
                   </li>
                 </Link>
                 <Link to='/Privacy' style={{ textDecoration: 'none' }}>
-                  <li className="mb-2" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                    <a href="#" className="hover:underline"><ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Privacy')} </a>
+                  <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
+                    <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Privacy')} 
                   </li>
                 </Link>
                 <Link to='/Services' style={{ textDecoration: 'none' }}>
-                  <li className="mb-2" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                    <a href="#" className="hover:underline"> <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Services')}</a>
+                  <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
+                     <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Services')}
                   </li>
                 </Link>
                 <Link to='/Contact' style={{ textDecoration: 'none' }}>
-                  <li className="mb-2" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                    <a href="#" className="hover:underline"> <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Contact Us')} </a>
+                  <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
+                     <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Contact Us')} 
                   </li>
                 </Link>
                 <Link to='/Brands' style={{ textDecoration: 'none' }}>
-                  <li className="mb-2" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                    <a href="#" className="hover:underline"> <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Brands')}</a>
+                  <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
+                     <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Brands')}
                   </li>
                 </Link>
               </ul>

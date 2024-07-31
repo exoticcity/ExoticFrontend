@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, Card, Grid, TextField, Tooltip, Typography } from "@mui/material"
+import { Box, Button, Card, Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from "@mui/material"
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,7 +8,8 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next'
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const Login = () => {
     const { t } = useTranslation();
 
@@ -18,6 +19,7 @@ const Login = () => {
     const [userId, setuserId] = useState('');
     const [password, setPassword] = useState('')
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [showPass, setShowPass] = useState(false);
 
 
     const onSubmit = async (data) => {
@@ -45,7 +47,9 @@ const Login = () => {
             console.error(error);
         }
     };
-
+    const handleTogglePasswordVisibility = () => {
+        setShowPass((prevShowPass) => !prevShowPass);
+    };
 
     return (
         <Grid container sx={{ width: '98.9vw', pt: '2rem', pb: '4rem', backgroundColor: '#f2f2f2', minHeight: '81vh' }}>
@@ -62,7 +66,25 @@ const Login = () => {
                         </Box>
                         <Box sx={{ pt: '2rem' }}>
                             <Typography sx={{ fontSize: '13px', fontFamily: 'Montserrat' }}>{t('Password')}</Typography>
-                            <TextField type="password" size="small" fullWidth onChange={(e) => setPassword(e.target.value)} {...register('password', { required: true })} />
+                            <TextField
+                                type={showPass ? 'text' : 'password'}
+                                size="small"
+                                fullWidth
+                                onChange={(e) => setPassword(e.target.value)}
+                                {...register('password', { required: true })}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={handleTogglePasswordVisibility}
+                                                edge="end"
+                                            >
+                                                {showPass ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', pt: '2rem' }}>
                             <Link to='/ForgetPassword' style={{ textDecoration: 'none' }}>

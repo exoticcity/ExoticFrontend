@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material"
 
 const LegalNotice = () => {
     return (
-        <Grid container>
+        <Grid container sx={{height: "70vh"}}>
             <Grid item>
                 <Typography variant="h4" sx={{ fontWeight: '600', pl: '3rem', pt: '2rem' }}>Legal Notice</Typography>
                 <Box sx={{ width: '8rem', height: '2.5px', backgroundColor: 'orange', margin: '8px 0', textAlign: 'center', marginLeft: '3rem', marginRight: 'auto' }} ></Box>

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
-import { Box, Button, Card, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,13 +8,15 @@ import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next'
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const EmailVerify = () => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('')
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { register, handleSubmit } = useForm();
+    const [showPass, setShowPass] = useState(false);
 
     const handleVerify = async (data) => {
         const csrfToken = Cookies.get("csrftoken");
@@ -36,7 +38,9 @@ const EmailVerify = () => {
         }
 
     };
-    
+    const handleTogglePasswordVisibility = () => {
+        setShowPass((prevShowPass) => !prevShowPass);
+    };
     return (
         <Grid container sx={{ width: '98vw', pt: '2rem', pb: '4rem', backgroundColor: '#f2f2f2' }}>
             <Grid item xs={12} sm={8} md={6} lg={4}>
@@ -58,9 +62,25 @@ const EmailVerify = () => {
                         </Box>
                         <Box sx={{ pt: '2rem' }}>
                             <Typography sx={{ fontSize: '13px', fontFamily: 'Montserrat' }}>{t('Password')}</Typography>
-                            <TextField type="password" size="small" fullWidth
+
+                            <TextField
+                                type={showPass ? 'text' : 'password'}
+                                size="small"
+                                fullWidth
                                 onChange={(e) => setUserPassword(e.target.value)}
                                 {...register('password', { required: true })}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={handleTogglePasswordVisibility}
+                                                edge="end"
+                                            >
+                                                {showPass ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', pt: '2rem' }}> </Box>

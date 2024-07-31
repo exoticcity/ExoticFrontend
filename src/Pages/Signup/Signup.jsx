@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Checkbox from '@mui/material/Checkbox';
-import { Box, Button, Card, Grid, MenuItem,  TextField, Typography } from "@mui/material"
+import { Box, Button, Card, Grid, IconButton, InputAdornment, MenuItem, TextField, Typography } from "@mui/material"
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,7 +11,8 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next'
-
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 const Signup = () => {
     const { t } = useTranslation();
 
@@ -19,6 +20,7 @@ const Signup = () => {
     const { loading, setLoading, accessTokenUrl } = useContext(Context);
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
+    const [showPass, setShowPass] = useState(false);
 
     // STATES
     const [postCodes, setPostCodes] = useState([]);
@@ -33,7 +35,9 @@ const Signup = () => {
     const handleCityChange = (e) => { const cityCode = e.target.value; setSelectedCityCode(cityCode); };
     const filteredPostCodes = postCodes.filter((postcode) => postcode.Country_Region_Code === selectedCountryCode);
     const csrfToken = Cookies.get("csrftoken");
-
+    const handleTogglePasswordVisibility = () => {
+        setShowPass((prevShowPass) => !prevShowPass);
+    };
     // CUSTOMER API
     const handleFormSubmit = async (data) => {
         try {
@@ -106,7 +110,7 @@ const Signup = () => {
                     }
                 }
             );
-           
+
             toast.success('Account created successfully');
             navigate("/Login");
         } catch (error) {
@@ -347,7 +351,24 @@ const Signup = () => {
                             <Grid item xs={12} sm={6}>
                                 <Box sx={{ pt: '10px' }}>
                                     <Typography sx={{ fontSize: '13px' }}>{t('Password')}</Typography>
-                                    <TextField type="password" size="small" fullWidth {...register('password', { required: true })} />
+                                    <TextField
+                                        type={showPass ? 'text' : 'password'}
+                                        size="small"
+                                        fullWidth
+                                        {...register('password', { required: true })}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        onClick={handleTogglePasswordVisibility}
+                                                        edge="end"
+                                                    >
+                                                        {showPass ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
                                 </Box>
                             </Grid>
                         </Grid>

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, IconButton, InputAdornment, TextField } from "@mui/material";
 import Filters from "../../views/products/Filters";
 import ProductCards from "../../views/products/ProductCards";
 import { useTranslation } from 'react-i18next'
@@ -8,9 +8,9 @@ import { Context } from "../../App";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import NavigationIcon from '@mui/icons-material/Navigation';
 import Fab from '@mui/material/Fab';
-import { useParams } from "react-router-dom"; // Assuming you are using React Router for routing
+import { useParams } from "react-router-dom";
 import axios from "axios";
-
+import SearchIcon from '@mui/icons-material/Search';
 const Products = () => {
     const { data, setData, setCategory, setSubCategory, setBrand } = useContext(Context);
     const { t } = useTranslation();
@@ -18,7 +18,8 @@ const Products = () => {
     let { ptcategory, Category, subCategory, brands } = useParams();
     const [url, setUrl] = useState(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getProducts/?Blocked=false&SalesBlocked=false&ParentCategory=${ptcategory}${Category ? `&ItemCategoryCode=${Category}` : ''}${subCategory ? `&ItemSubCategoryCode=${subCategory}` : ''}${brands ? `&Brand=${brands}` : ''}`)
     const [isVisible, setIsVisible] = useState(false);
-
+    const [searchQuery, setSearchQuery] = useState('');
+ 
     useLayoutEffect(() => {
         let newUrl = url.replace(/(\?|&)ParentCategory=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)ItemCategoryCode=[^&]*/g, "");
@@ -27,7 +28,7 @@ const Products = () => {
         newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
         const separator = newUrl.includes('?') ? '&' : '?';
         setUrl(newUrl + `${separator}ParentCategory=${ptcategory}`);
-
+ 
         if (Category) {
             let newUrl = url.replace(/(\?|&)ItemCategoryCode=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
@@ -46,9 +47,9 @@ const Products = () => {
             const separator = newUrl.includes('?') ? '&' : '?';
             setUrl(newUrl + `${separator}&Brand=${brands}`);
         }
-
+ 
     }, [])
-
+ 
     useEffect(() => {
         axios.get(url)
             .then((res) => {
@@ -63,16 +64,15 @@ const Products = () => {
                 console.error("Error:", err);
             });
     }, [url])
-
+ 
     const handleViewMore = () => {
         const newLimit = limit + 20;
         setLimit(newLimit);
         let newUrl = url.replace(/(\?|&)limit=[^&]*/g, "");
-        newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)offset=[^&]*/g, "");
         setUrl(newUrl + ((newUrl.includes('?') ? '&' : '?')) + `limit=${newLimit}`);
     };
-
+ 
     useEffect(() => {
         const toggleVisibility = () => {
             if (window.scrollY > 200) {
@@ -86,15 +86,15 @@ const Products = () => {
             window.removeEventListener('scroll', toggleVisibility);
         };
     }, []);
-
+ 
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     };
-
-    const handleSearch = (e) => {
+ 
+    const handleSearch = () => {
         let newUrl = url.replace(/(\?|&)search=[^&]*/g, '');
         newUrl = newUrl.replace(/(\?|&)ParentCategory=[^&]*/g, '');
         newUrl = newUrl.replace(/(\?|&)ItemCategoryCode=[^&]*/g, '');
@@ -103,9 +103,9 @@ const Products = () => {
         newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, '');
         newUrl = newUrl.replace(/(\?|&)offset=[^&]*/g, '');
         const separator = newUrl.includes('?') ? '&' : '?';
-        setUrl(newUrl + `${separator}search=${encodeURIComponent(e.target.value)}`);
+        setUrl(newUrl + `${separator}search=${encodeURIComponent(searchQuery)}`);
     };
-
+ 
     return (
         <Grid container sx={{ display: 'flex', flexDirection: 'column', width: '98%' }}>
             <marquee behavior="scroll" direction="left" fontSize="20px" style={{ width: '98.9vw' }} >{t('PROMO_SLIDER')}</marquee>
@@ -114,12 +114,14 @@ const Products = () => {
                     <div>
                         <Filters url={url} setUrl={setUrl} />
                     </div>
-
+ 
                     <div>
                         <TextField
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    handleSearch(e);
+                                    handleSearch();
                                 }
                             }}
                             sx={{ width: 'auto' }}
@@ -129,9 +131,19 @@ const Products = () => {
                             htmlFor="search"
                             size='small'
                             fullWidth
-
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            onClick={handleSearch}
+                                            aria-label="search"
+                                        >
+                                            <SearchIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                         />
-
                     </div>
                 </Box>
             </Grid>
@@ -142,7 +154,7 @@ const Products = () => {
                     </Grid>
                 ))}
             </Grid>
-
+ 
             <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', width: '98%', m: '20px' }}>
                 <Button variant="contained" size="small" color="primary" onClick={handleViewMore}
                     sx={{ display: 'flex', justifyContent: 'space-between', px: '20px', fontSize: '13px', fontWeight: 600, backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff' }, }}>  Show More  <KeyboardArrowDownIcon />
@@ -155,11 +167,11 @@ const Products = () => {
                         </Fab>
                     )}
                 </Box>
-
+ 
             </Box>
-
+ 
         </Grid>
     );
 };
-
+ 
 export default Products;

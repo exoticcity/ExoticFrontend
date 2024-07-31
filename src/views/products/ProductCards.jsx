@@ -11,8 +11,8 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import './style.css'
- 
- 
+
+
 const ProductCards = ({ item, url, setUrl }) => {
     const { t } = useTranslation();
     const [itemPrice, setItemPrice] = useState(0);
@@ -20,32 +20,35 @@ const ProductCards = ({ item, url, setUrl }) => {
     const [isInputChanged, setIsInputChanged] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
     const [loading, setLoading] = useState(true);
- 
+
     const [postCart, setPostCart] = useState([])
- 
+
     // USER-CONTEXT
     const { data, currentPage, user, accessTokenUrl, isIncrement, setIsIncrement, cartData, setChange, cart, inputQuantity, setInputQuantity } = useContext(Context);
     let CustomerPG = localStorage.getItem('CustomerPriceGroup')
     useLayoutEffect(() => {
         setInputQuantity(isIncrement[item.id])
     }, [setInputQuantity])
- 
+
     useEffect(() => {
         setInputQuantity(prev => ({
             ...prev,
             [item.id]: (isIncrement[item.id] || 0)
         }));
     }, [item.id]);
- 
+
     const handleQuantityChange = (id, value) => {
         const numericalValue = parseInt(value, 10);
         setInputQuantity(prev => ({
             ...prev,
             [id]: numericalValue
         }));
-        setIsInputChanged(true);
+        setIsInputChanged(prev => ({
+            ...prev,
+            [id]: true
+        }));
     };
- 
+
     if (user) {
         useLayoutEffect(() => {
             const incrementValue = JSON.stringify(isIncrement[item.id] || 0);
@@ -62,18 +65,18 @@ const ProductCards = ({ item, url, setUrl }) => {
             }
         }, [CustomerPG, data]);
     }
- 
+
     const addToCart = async (id) => {
         const item = data.find(item => item?.id === id);
         const currUserNo = sessionStorage.getItem("user");
- 
+
         if (!item || item.Quantity < 1) {
             toast.error('Item is out of stock');
             return;
         }
- 
+
         const quantity = Number(inputQuantity[id]) || 0;
- 
+
         // if (quantity > item.Quantity) {
         //     toast.error(`Maximum limit reached for this item (limit: ${item.Quantity})`);
         //     return;
@@ -86,7 +89,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                 };
                 await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/update_cart/${currUserNo}/`, updateCartData);
                 toast.success('Cart updated successfully');
- 
+
             }
         } catch (error) {
             const postData = {
@@ -96,18 +99,23 @@ const ProductCards = ({ item, url, setUrl }) => {
             await axios.post('https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/create_cart/', postData);
             toast.success('Item added to cart successfully');
         } finally {
-            setButtonClicked(true);
-            setIsInputChanged(false);
+            setButtonClicked(prev => ({
+                ...prev,
+                [id]: true
+            }));
+            setIsInputChanged(prev => ({
+                ...prev,
+                [id]: false
+            }));
         }
     };
- 
- 
+
     // FUNCTIONS
     const cartIsCleared = () => {
         const storedItems = JSON.parse(localStorage.getItem('selectedItems')) || {};
         return Object.keys(storedItems).length === 0;
     };
- 
+
     const handleIncrement = (id) => {
         const item = data.find(item => item?.id === id);
         if (item && item.Quantity > 0) {
@@ -117,14 +125,14 @@ const ProductCards = ({ item, url, setUrl }) => {
             toast.error("Item Out of Stock");
         }
     };
- 
+
     const handleDecrement = (id) => {
         const newQuantity = Number(inputQuantity[id] || 0) - 1;
         if (newQuantity >= 0) {
             handleQuantityChange(id, newQuantity);
         }
     };
- 
+
     useLayoutEffect(() => {
         axios.get(`https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/itempic?$filter=ItemNo eq '${item?.ItemNo}'`, {
             headers: {
@@ -140,17 +148,17 @@ const ProductCards = ({ item, url, setUrl }) => {
                 setLoading(false);
             });
     }, [accessTokenUrl, picture, item?.ItemNo]);
- 
+
     // USE-EFFECT
     useEffect(() => {
         if (cartIsCleared()) { setIsIncrement({}); }
         localStorage.setItem('storedData', JSON.stringify(data?.results));
     }, [currentPage, isIncrement, data]);
- 
+
     useEffect(() => {
         localStorage.setItem('newIncrement', JSON.stringify(isIncrement));
     }, [isIncrement]);
- 
+
     if (loading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -158,7 +166,7 @@ const ProductCards = ({ item, url, setUrl }) => {
             </Box>
         );
     }
- 
+
     const formattedPrice = itemPrice?.price ? (Math.round(itemPrice.price * 100) / 100).toFixed(2) + " € HTVA" : "";
     return (
         <>
@@ -260,7 +268,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                             +
                         </Button>
                     </Box>
- 
+
                     <Button
                         variant="contained"
                         size="small"
@@ -276,7 +284,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                         }
                         sx={{
                             display: 'flex', justifyContent: 'center', alignItems: 'center', px: '18px', fontSize: '10px', backgroundColor: "#fff",
-                            color: isInputChanged ? '#ff0000' : buttonClicked ? 'green' : '#000',
+                            color: isInputChanged[item.id] ? '#ff0000' : buttonClicked[item.id] ? 'green' : '#000',
                             transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', },
                         }}>
                         <ShoppingCartIcon />
@@ -286,5 +294,5 @@ const ProductCards = ({ item, url, setUrl }) => {
         </>
     );
 }
- 
+
 export default ProductCards;
