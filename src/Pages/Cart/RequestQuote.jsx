@@ -241,13 +241,13 @@ const RequestQuote = () => {
                 {userObj?.CustomerPostingGroup === "LOCAL" || userObj?.CustomerPostingGroup === "PARTICULIER" ? (
                   <>
                     <Typography variant="h6" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
-                      {t('TotalExVat')}: {(totalPrice.total_amount_excluding_vat).toFixed(2)}
+                      {t('TotalExVat')}: {(totalPrice.total_amount_excluding_vat)?.toFixed(2)}
                     </Typography>
                     <Typography variant="h6" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
-                      {t('Vat Amount')}:  {(totalPrice.vat_amount).toFixed(2)}
+                      {t('Vat Amount')}:  {(totalPrice.vat_amount)?.toFixed(2)}
                     </Typography>
                     <Typography variant="h6" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
-                      {t('TotalInVat')}: {(totalPrice.total_amount_including_vat).toFixed(2)}
+                      {t('TotalInVat')}: {(totalPrice.total_amount_including_vat)?.toFixed(2)}
                     </Typography>
                   </>
                 ) : (
