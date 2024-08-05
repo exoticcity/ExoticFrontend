@@ -180,11 +180,11 @@ const ItemCard = ({ items, index }) => {
                                 </>
                             ) : (
                                 <>
-                                    <Typography variant="body" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}> {t('Vat Amount')}:
+                                    {/* <Typography variant="body" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}> {t('Vat Amount')}:
                                         {
                                             items?.vat_amount
                                         }
-                                    </Typography>
+                                    </Typography> */}
                                 </>
                             )}
                         </Box>
