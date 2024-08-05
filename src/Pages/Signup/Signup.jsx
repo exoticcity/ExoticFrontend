@@ -17,7 +17,7 @@ const Signup = () => {
     const { t } = useTranslation();
 
     // USER-CONTEXT
-    const { loading, setLoading, accessTokenUrl } = useContext(Context);
+    const { loading, setLoading, accessTokenUrl, data, parentCategory } = useContext(Context);
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
     const [showPass, setShowPass] = useState(false);
@@ -114,18 +114,21 @@ const Signup = () => {
             toast.success('Account created successfully');
             navigate("/Login");
         } catch (error) {
-            console.error("An error occurred:", error.message);
-            if (error.response) {
-                console.error("Response Error Data:", error.response.data);
-                console.error("Response Error Status:", error.response.status);
-                console.error("Response Error Headers:", error.response.headers);
-                toast.error('Cannot register at the moment, please try again later!');
-            } else if (error.request) {
-                console.error("No response received from server:", error.request);
+            console.error("An error occurred thissss:", error?.message, error?.response?.data?.email);
+            if (error?.response?.status === 400) {
+                toast.error(`Error: ${error?.response?.data?.email[0]}`);
+            }
+            if (error?.response) {
+                console.error("Response Error Data:", error?.response?.data);
+                console.error("Response Error Status:", error?.response?.status);
+                console.error("Response Error Headers:", error?.response?.headers);
+                toast.error(`Error: ${error.message}`);
+            } else if (error?.request) {
+                console.error("No response received from server:", error?.request);
                 toast.error('No response received from server');
             } else {
-                console.error("Request setup error:", error.message);
-                toast.error('Request setup error');
+                console.error("Request setup error:", error?.message);
+                toast.error('Request setup error: ' + error?.message);
             }
         } finally {
             setLoading(false);
@@ -141,17 +144,17 @@ const Signup = () => {
     useEffect(() => {
         const fetchCountries = async () => { try { const response = await apiInstance.get('/Company(\'My%20Company\')/countryregion'); setCountries(response.data.value); } catch (error) { console.error("Error fetching countries:", error.message); } };
         fetchCountries();
-    }, []);
+    }, [parentCategory]);
 
     useEffect(() => {
         const fetchPostCodes = async () => { try { const response = await apiInstance.get('/Company(\'My%20Company\')/postcodes'); setPostCodes(response.data.value); } catch (error) { console.error("Error fetching postcodes:", error); } };
         fetchPostCodes();
-    }, []);
+    }, [parentCategory]);
 
     useEffect(() => {
         const fetchLanguages = async () => { try { const response = await apiInstance.get('/Company(\'My%20Company\')/Languages'); setLanguages(response.data.value); } catch (error) { console.error("Error fetching languages:", error); } };
         fetchLanguages();
-    }, []);
+    }, [parentCategory]);
 
     return (
         <Grid container sx={{ width: '100%', pt: '2rem', pb: '4rem', backgroundColor: '#f2f2f2' }}>
