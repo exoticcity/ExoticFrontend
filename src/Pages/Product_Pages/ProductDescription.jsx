@@ -32,6 +32,7 @@ const ProductDescription = () => {
             fetchProduct();
         }
     }, [id, accessTokenUrl]);
+    console.log("ooooo",product);
 
 
     useEffect(() => {
@@ -155,7 +156,7 @@ const ProductDescription = () => {
                             <Typography variant="body2" sx={{ mb: '10px' }}>{userID ? (Math.round(priceOfProduct?.price * 100) / 100).toFixed(2) : "Login To View Price"}</Typography>
                             <Typography variant="body2" sx={{ mb: '10px' }}>{product.BarCode}</Typography>
                             <Typography variant="body2" sx={{ mb: '10px' }}>{product.SalesUnitOfMeasure}</Typography>
-                            <Typography variant="body2" sx={{ mb: '10px' }}>{product.NetWeight}</Typography>
+                            <Typography variant="body2" sx={{ mb: '10px' }}>{product.WeightDescription}</Typography>
                             <Typography variant="body2" sx={{ mb: '10px' }}>{product.Brand}</Typography>
                         </Grid>
                     </Grid>
