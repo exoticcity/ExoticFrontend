@@ -89,7 +89,6 @@ const ProductCards = ({ item, url, setUrl }) => {
                 };
                 await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/update_cart/${currUserNo}/`, updateCartData);
                 toast.success('Cart updated successfully');
-
             }
         } catch (error) {
             const postData = {

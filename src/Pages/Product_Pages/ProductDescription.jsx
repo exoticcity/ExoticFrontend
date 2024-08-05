@@ -33,6 +33,7 @@ const ProductDescription = () => {
         }
     }, [id, accessTokenUrl]);
 
+
     useEffect(() => {
         const fetchPicture = async () => {
             try {
@@ -75,25 +76,7 @@ const ProductDescription = () => {
         navigate(-1);
     };
 
-    const userID = sessionStorage.getItem('user');
-
-
-    const modifyCart = async (newQuantity) => {
-        try {
-            const userCartResponse = await axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/${userID}`);
-            if (userCartResponse?.status === 200) {
-                await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/${userID}/`, {
-                    items_to_update: [{ itemNo: product.ItemNo, quantity: newQuantity }],
-                });
-            }
-        } catch (error) {
-            await axios.post('https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/', {
-                customer: userID,
-                items_in_cart: [{ itemNo: product.ItemNo, quantity: newQuantity }],
-            });
-            toast.success('Item added to cart successfully');
-        }
-    };
+    const userID = sessionStorage.getItem("user");
 
     const handleIncrement = () => {
         const newQuantity = quantity + 1;
@@ -106,6 +89,26 @@ const ProductDescription = () => {
         setQuantity(newQuantity);
         modifyCart(newQuantity);
     };
+
+    const modifyCart = async (newQuantity) => {
+        try {
+            const userCartResponse = await axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/cart/${userID}`);
+            const updateCartData = {
+                items_to_update: [{ itemNo: product?.ItemNo, quantity: newQuantity }],
+            };
+            if (userCartResponse?.status === 200) {
+                await axios.put(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/update_cart/${userID}/`, updateCartData);
+            }
+        } catch (error) {
+            const postData = {
+                customer: userID,
+                items_in_cart: [{ itemNo: product?.ItemNo, quantity: newQuantity }],
+            }
+            await axios.post(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/create_cart/`, postData);
+            toast.success('Item added to cart successfully');
+        }
+    };
+
 
     return (
         <Grid container justifyContent="center" alignItems="center" sx={{ backgroundColor: '#f2f2f2', minHeight: '100vh', p: '20px' }}>
@@ -169,7 +172,7 @@ const ProductDescription = () => {
                                 }
                             }}
                             sx={{ fontSize: '14px', backgroundColor: '#fff', color: 'red', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: 'red', color: '#fff', }, }}  > - </Button>
-                        <Typography variant="body">{isIncrement[product.id] || "0"}</Typography>
+                        <Typography variant="body">{isIncrement[product?.id] || "0"}</Typography>
                         <Button variant="contained"
                             size="small"
                             color="success"
