@@ -180,8 +180,7 @@ const ItemCard = ({ items, index }) => {
                                 </>
                             ) : (
                                 <>
-                                    <Typography variant="body" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}> Amount:
-                                        {/* €{parseFloat((Math.round(priceOfItem?.price * 100) / 100) * isIncrement[item?.id]).toFixed(2)} */}
+                                    <Typography variant="body" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}> {t('Vat Amount')}:
                                         {
                                             items?.vat_amount
                                         }
