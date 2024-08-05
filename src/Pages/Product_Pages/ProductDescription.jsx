@@ -32,7 +32,7 @@ const ProductDescription = () => {
             fetchProduct();
         }
     }, [id, accessTokenUrl]);
-    console.log("ooooo",product);
+    console.log("ooooo", product);
 
 
     useEffect(() => {
@@ -173,7 +173,7 @@ const ProductDescription = () => {
                                 }
                             }}
                             sx={{ fontSize: '14px', backgroundColor: '#fff', color: 'red', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: 'red', color: '#fff', }, }}  > - </Button>
-                        <Typography variant="body">{isIncrement[product?.id] || "0"}</Typography>
+                        <Typography variant="body">{isIncrement[product?.id] || quantity}</Typography>
                         <Button variant="contained"
                             size="small"
                             color="success"
