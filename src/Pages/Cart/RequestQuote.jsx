@@ -218,10 +218,16 @@ const RequestQuote = () => {
       })
   }, [])
 
+  const handleGoBack = () => { window.history.back() };
+
+
   return (
     <Grid container>
       <Grid item xs={12} md={8}>
         <Paper elevation={2} sx={{ p: 2, mx: 1, my: 1, width: '95%', minHeight: '75vh' }}>
+          <Button onClick={handleGoBack} sx={{ margin: '20px', backgroundColor: '#fff', color: '#000', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.3)', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff' }, px: '20px' }}>
+            <KeyboardReturnIcon />
+          </Button>
           <Typography variant="h6" sx={{ fontWeight: 600, textTransform: 'uppercase' }}> {t('Shopping Cart')}</Typography>
           <Typography variant="body2" color="textSecondary">You have {cartData.length} items in your cart</Typography>
           {cartData?.map((items, index) => (

@@ -107,7 +107,8 @@ const Products = () => {
     };
  
     return (
-        <Grid container sx={{ display: 'flex', flexDirection: 'column', width: '98%' }}>
+        <Grid container sx={{ display: 'flex', flexDirection: 'column', width: '98%'}}>
+
             <marquee behavior="scroll" direction="left" fontSize="20px" style={{ width: '98.9vw' }} >{t('PROMO_SLIDER')}</marquee>
             <Grid item sx={{ width: '100%' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexDirection: { xs: "column", sm: "column", md: 'column', lg: 'row' } }}>

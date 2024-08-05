@@ -129,10 +129,10 @@ const ProductDescription = () => {
                     }}>
                         PRODUCTS
                     </Typography>
-                    <Typography variant="subtitle2" color="inherit" onClick={handleContinueShopping}>
+                    <Typography variant="subtitle2" color="inherit" onClick={handleContinueShopping} sx={{ cursor: 'pointer' }}>
                         {product?.ParentCategory}
                     </Typography>
-                    <Typography variant="subtitle2" color="text.primary">{product.ItemNo}</Typography>
+                    <Typography variant="subtitle2" color="text.primary" sx={{ cursor: 'pointer' }}>{product.ItemNo}</Typography >
                 </Breadcrumbs>
             </Box>
             <Grid container sx={{ height: { xs: 'auto', sm: 'auto', lg: '100%' }, display: 'flex', width: '100%', justifyContent: 'center' }}>
