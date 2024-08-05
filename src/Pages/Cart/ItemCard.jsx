@@ -127,7 +127,7 @@ const ItemCard = ({ items, index }) => {
                         alt="Shopping item"
                         style={{
                             width: "100%",
-                            height: "auto",
+                            height: "25vh",
                             objectFit: "cover",
                             borderRadius: "8px"
                         }}

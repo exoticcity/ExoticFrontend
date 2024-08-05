@@ -72,7 +72,7 @@ const ProductDescription = () => {
     }
 
     const handleContinueShopping = () => {
-        navigate(-1); 
+        navigate(-1);
     };
 
     const userID = sessionStorage.getItem('user');
@@ -134,7 +134,7 @@ const ProductDescription = () => {
             <Grid container sx={{ height: { xs: 'auto', sm: 'auto', lg: '100%' }, display: 'flex', width: '100%', justifyContent: 'center' }}>
                 <Grid item xs={12} sm={6} lg={4} >
                     <img src={product && picture ? `data:image/jpeg;base64,${picture?.replace(/"/g, '')}` : '/assets/jpeg/ExoticLogo.jpg'}
-                        alt="" style={{ width: '100%' }} />
+                        alt="" style={{ width: '100%', height: "80vh" }} />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={6} sx={{ p: '20px' }}>
                     <Typography variant="subtitle1" sx={{ mb: '10px', fontWeight: 600, fontSize: '35px' }}>{product.Description}</Typography>
