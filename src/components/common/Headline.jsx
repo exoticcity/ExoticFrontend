@@ -1,10 +1,13 @@
-import { Typography, Grid, Divider } from "@mui/material";
+import { Typography, Grid, Divider, Box } from "@mui/material";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Link } from "react-router-dom";
 
 const Headline = () => {
+  const openWhatsApp = () => {
+    window.open('https://wa.me/324850001400', '_blank');
+  };
   return (
     <Grid container position="relative" sx={{ height: '1.8rem', backgroundColor: "#E6E6E6", width: '100%', pl: '50px' }}>
       <Grid item sx={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center', gap: '10px' }}>
@@ -16,6 +19,13 @@ const Headline = () => {
       <Grid item sx={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center' }}>
         <Link to='/Legal' style={{ textDecoration: 'none' }}>  <Typography sx={{ color: '#A8A8A8', fontSize: '13px', pt: '4px' }}>Legal Notice</Typography>  </Link>
       </Grid>
+      <Box>
+        <Typography
+          sx={{ color: '#A8A8A8', fontSize: '13px', pt: '4px', pl: '10px', cursor: 'pointer', fontFamily: "Montserrat" }}
+          onClick={openWhatsApp}
+        >
+          (WhatsApp: +324850001400)
+        </Typography>      </Box>
     </Grid>
   )
 }
