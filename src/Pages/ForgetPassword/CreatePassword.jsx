@@ -30,14 +30,14 @@ const EmailVerify = () => {
                     "X-CSRFToken": csrfToken,
                 }
             });
-            toast.success("Account Created Successfully")
+            toast.success("Account Created Successfully");
             navigate("/Login");
         } catch (err) {
-            console.error('Error verifying email:', err);
-            toast.error('Your request cannot be proceeded at the moment. Please try again.');
+                console.error('Error verifying email:', err.response.data);
+                toast.error(`${err.response.data}`);
         }
-
     };
+    
     const handleTogglePasswordVisibility = () => {
         setShowPass((prevShowPass) => !prevShowPass);
     };

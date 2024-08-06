@@ -22,8 +22,6 @@ const NewPassword = () => {
             toast.success("Password Updated Successfully!")
             navigate('/Login')
         })
-
-
     };
 
     return (

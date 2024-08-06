@@ -114,22 +114,8 @@ const Signup = () => {
             toast.success('Account created successfully');
             navigate("/Login");
         } catch (error) {
-            console.error("An error occurred thissss:", error?.message, error?.response?.data?.email);
-            if (error?.response?.status === 400) {
-                toast.error(`Error: ${error?.response?.data?.email[0]}`);
-            }
-            if (error?.response) {
-                console.error("Response Error Data:", error?.response?.data);
-                console.error("Response Error Status:", error?.response?.status);
-                console.error("Response Error Headers:", error?.response?.headers);
-                toast.error(`Error: ${error.message}`);
-            } else if (error?.request) {
-                console.error("No response received from server:", error?.request);
-                toast.error('No response received from server');
-            } else {
-                console.error("Request setup error:", error?.message);
-                toast.error('Request setup error: ' + error?.message);
-            }
+            console.error("An error occurred thissss:", error);
+            toast.error(`${error}`)
         } finally {
             setLoading(false);
         }

@@ -43,8 +43,8 @@ const Login = () => {
             navigate("/");
             toast.success("Login Successfully")
         } catch (error) {
-            toast.error("Check Email and Password, Then Try Again!");
-            console.error(error);
+            toast.error("Access denied: wrong username or password.");
+            console.error('LOGINER',error);
         }
     };
     const handleTogglePasswordVisibility = () => {
