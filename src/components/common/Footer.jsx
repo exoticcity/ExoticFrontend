@@ -9,7 +9,8 @@ import { Context } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next'
-import { useLocation, useParams } from "react-router-dom"; 
+import { useLocation, useParams } from "react-router-dom";
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -17,7 +18,9 @@ const Footer = () => {
 
   let { ptcategory, Category, subCategory, brands } = useParams();
   const [url, setUrl] = useState(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getProducts/?Blocked=false&SalesBlocked=false&ParentCategory=${ptcategory}${Category ? `&ItemCategoryCode=${Category}` : ''}${subCategory ? `&ItemSubCategoryCode=${subCategory}` : ''}${brands ? `&Brand=${brands}` : ''}`)
-
+  const openWhatsApp = () => {
+    window.open('https://wa.me/324850001400', '_blank');
+  };
   return (
     <div>
       <footer className="" style={{ backgroundColor: '#4A4A4A', color: '#fff' }}>
@@ -35,8 +38,8 @@ const Footer = () => {
                   <LocationOnIcon sx={{ fontSize: '16px', cursor: 'pointer' }} /> 4432 Alleur
                 </li>
                 <Box sx={{ width: '80%', height: '1px', backgroundColor: 'lightgray', margin: '8px 0' }} ></Box>
-                <li className="" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }} onClick={() => window.location.href = 'tel:042280400'}>
-                  <PhoneIcon sx={{ fontSize: '16px', cursor: 'pointer' }} /> 042 280 400
+                <li className="" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }} onClick={openWhatsApp}>
+                  <WhatsAppIcon sx={{ fontSize: '16px', cursor: 'pointer' }} /> +324850001400
                 </li>
                 <Box sx={{ width: '80%', height: '1px', backgroundColor: 'lightgray', margin: '8px 0' }} ></Box>
                 <li className="" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }} onClick={() => window.location.href = 'mailto:info@exoticcity.be'}>
@@ -60,22 +63,22 @@ const Footer = () => {
                 </Link>
                 <Link to='/Privacy' style={{ textDecoration: 'none' }}>
                   <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                    <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Privacy')} 
+                    <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Privacy')}
                   </li>
                 </Link>
                 <Link to='/Services' style={{ textDecoration: 'none' }}>
                   <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                     <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Services')}
+                    <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Services')}
                   </li>
                 </Link>
                 <Link to='/Contact' style={{ textDecoration: 'none' }}>
                   <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                     <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Contact Us')} 
+                    <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Contact Us')}
                   </li>
                 </Link>
                 <Link to='/Brands' style={{ textDecoration: 'none' }}>
                   <li className="mb-2 hover:underline" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                     <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Brands')}
+                    <ArrowForwardIosIcon sx={{ fontSize: '12px' }} /> {t('Brands')}
                   </li>
                 </Link>
               </ul>

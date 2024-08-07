@@ -2,6 +2,7 @@ import { Typography, Grid, Divider, Box } from "@mui/material";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { Link } from "react-router-dom";
 
 const Headline = () => {
@@ -24,7 +25,7 @@ const Headline = () => {
           sx={{ color: '#A8A8A8', fontSize: '13px', pt: '4px', pl: '10px', cursor: 'pointer', fontFamily: "Montserrat" }}
           onClick={openWhatsApp}
         >
-          (WhatsApp: +324850001400)
+          (<WhatsAppIcon sx={{ color: '#000', width: '15px' }} />: +324850001400)
         </Typography>      </Box>
     </Grid>
   )
