@@ -289,7 +289,7 @@ const RequestQuote = () => {
               </Button>
               {
                 acceptTerms ? (
-                  <Button variant="contained" size="small" onClick={postSalesOrder} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: '16px', fontSize: '10px', backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }}><LocalMallIcon sx={{ fontSize: '14px' }} /> {loading ? t('Placing Order') : t('Place Order')}</Button>
+                  <Button variant="contained" size="small" onClick={postSalesOrder} disabled={loading} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: '16px', fontSize: '10px', backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }}><LocalMallIcon sx={{ fontSize: '14px' }} /> {loading ? t('Placing Order') : t('Place Order')}</Button>
                 ) : ""
               }
             </Box>
