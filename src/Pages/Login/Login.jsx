@@ -23,6 +23,7 @@ const Login = () => {
 
 
     const onSubmit = async (data) => {
+        setIsLoggingIn(true)
         const csrfToken = Cookies.get("csrftoken");
         try {
             const response = await axios.post(
@@ -44,7 +45,6 @@ const Login = () => {
             toast.success("Login Successfully")
         } catch (error) {
             toast.error("Access denied: wrong username or password.");
-            console.error('LOGINER',error);
         }
     };
     const handleTogglePasswordVisibility = () => {
@@ -94,10 +94,12 @@ const Login = () => {
                             </Link>
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', pt: '2rem' }}>
-                            <Button variant='contained' color='primary' type='submit' size='small' sx={{ fontFamily: 'Montserrat', display: 'flex', justifyContent: 'space-between', px: '20px', fontSize: '13px', fontWeight: 600, backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }} disabled={isLoggingIn}>{t('Login')}</Button>
+
+                            <Button variant='contained' color='primary' type='submit' size='small' sx={{ fontFamily: 'Montserrat', display: 'flex', justifyContent: 'space-between', px: '20px', fontSize: '13px', fontWeight: 600, backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }} disabled={isLoggingIn}> {t('Login')}</Button>
+
                             <Link to='/VerifyEmail' style={{ textDecoration: 'none' }}>
                                 <Tooltip title="Already a Business Central Customer?" placement="top">
-                                    <Button size='small' sx={{ fontFamily: 'Montserrat', display: 'flex', justifyContent: 'space-between', px: '20px', fontSize: '13px', fontWeight: 600, backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, mt: {xs: '10px', sm: 0, md: 0, lg: 0}}} variant='contained'>{t('Create Password')}</Button>
+                                    <Button size='small' sx={{ fontFamily: 'Montserrat', display: 'flex', justifyContent: 'space-between', px: '20px', fontSize: '13px', fontWeight: 600, backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, mt: { xs: '10px', sm: 0, md: 0, lg: 0 } }} variant='contained'>{t('Create Password')}</Button>
                                 </Tooltip>
                             </Link>
                             <Typography sx={{ fontSize: '13px', fontFamily: 'Montserrat' }}><Link to='/Signup'>{t('NoAccount')}</Link></Typography>
