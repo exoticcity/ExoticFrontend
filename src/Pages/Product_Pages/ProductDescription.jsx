@@ -10,12 +10,12 @@ import 'react-toastify/dist/ReactToastify.css';
 const ProductDescription = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { setIsIncrement, isIncrement, user, accessTokenUrl, url, setUrl, setData, setChange, data } = useContext(Context);
+    const { isIncrement, user, accessTokenUrl, url, setUrl } = useContext(Context);
     const [picture, setPicture] = useState('');
     const [priceOfProduct, setPriceOfProduct] = useState([]);
     const customerPG = localStorage.getItem('CustomerPriceGroup');
     const [product, setProduct] = useState(null);
-    const [quantity, setQuantity] = useState(0); // This will track the quantity locally until API confirms change
+    const [quantity, setQuantity] = useState(0);
 
 
     useEffect(() => {

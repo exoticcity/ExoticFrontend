@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useLayoutEffect } from 'react';
 import { Grid, Typography, Button, Box, IconButton } from '@mui/material';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { Context } from '../../App';
 import DeleteIcon from '@mui/icons-material/Delete';
- 
+
 const ItemCard = ({ items, index }) => {
     const { t } = useTranslation();
     const { setIsIncrement, isIncrement, user, data, setData, setChange, accessTokenUrl, setCart, cartData, setCartData } = useContext(Context);
@@ -14,9 +14,9 @@ const ItemCard = ({ items, index }) => {
     const [picture, setPicture] = useState('');
     const CustomerPG = localStorage.getItem('CustomerPriceGroup');
     const [cartItems, setcartItems] = useState([])
- 
+
     const [selectedQuantity, setSelectedQuantity] = useState(items?.quantity)
- 
+
     useEffect(() => {
         axios.get(`https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer?$filter=No eq '${user}'`, {
             headers: {
@@ -25,13 +25,13 @@ const ItemCard = ({ items, index }) => {
         })
             .then((res) => {
                 setUserObj(res?.data?.value[0]);
- 
+
             })
             .catch((err) => {
                 console.error("Error:", err);
             });
     }, [user, accessTokenUrl]);
- 
+
     useEffect(() => {
         if (accessTokenUrl) {
             axios.get(`https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/itempic?$filter=ItemNo eq '${items?.product?.ItemNo}'`, {
@@ -47,7 +47,7 @@ const ItemCard = ({ items, index }) => {
                 });
         }
     }, [accessTokenUrl, cartData]);
- 
+
     useEffect(() => {
         if (items?.product?.ItemNo !== undefined || 0 && CustomerPG !== undefined || 0 && isIncrement[items?.product?.id] !== undefined || 0) {
             axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${items?.product?.ItemNo}/${CustomerPG}/${isIncrement[items?.product?.id] || 0}`)
@@ -60,7 +60,7 @@ const ItemCard = ({ items, index }) => {
                 });
         }
     }, [CustomerPG]);
- 
+
     const saveItemToLocalStorage = (price) => {
         const itemDetails = {
             ...items,
@@ -68,16 +68,16 @@ const ItemCard = ({ items, index }) => {
         };
         localStorage.setItem('currentItem', JSON.stringify(itemDetails));
     };
- 
- 
- 
-    const handleIncrement = async (id, itemNo) => {
+
+
+
+    const handleIncrement = async ( itemNo) => {
         const newQuantity = selectedQuantity + 1;
         setSelectedQuantity(newQuantity);
         updateCartQuantity(itemNo, newQuantity);
     };
- 
-    const handleDecrement = async (id, itemNo) => {
+
+    const handleDecrement = async ( itemNo) => {
         const newQuantity = selectedQuantity - 1;
         if (newQuantity >= 0) {
             setSelectedQuantity(newQuantity);
@@ -86,7 +86,7 @@ const ItemCard = ({ items, index }) => {
             toast.error("Cannot have less than 0 items");
         }
     };
- 
+
     const updateCartQuantity = async (itemNo, quantity) => {
         const updateCartData = {
             items_to_update: [{ itemNo: itemNo, quantity: quantity }],
@@ -97,9 +97,10 @@ const ItemCard = ({ items, index }) => {
             console.error("Failed to update cart", error);
             toast.error('Failed to update cart');
         }
+        window.location.reload()
     };
- 
- 
+
+
     const handleDeleteItem = async (itemNo, quantity) => {
         try {
             const updateCartData = {
@@ -117,7 +118,7 @@ const ItemCard = ({ items, index }) => {
             toast.error('Failed to delete item');
         }
     };
- 
+
     return (
         <>
             <Grid container spacing={2} sx={{ p: '10px', border: '1px solid #f2f2f2', m: '0.1px', borderRadius: '10px' }} >
@@ -154,7 +155,7 @@ const ItemCard = ({ items, index }) => {
                                     </Typography>
                                     <Typography variant="body" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>  {t('TotalExVat')}:
                                         {/* € {parseFloat((Math.round(priceOfItem?.price * 100) / 100) * selectedQuantity).toFixed(2)} */}
- 
+
                                         {
                                             items?.total_amount_excluding_vat || "NULL"
                                         }
@@ -171,12 +172,12 @@ const ItemCard = ({ items, index }) => {
                                     <Typography variant="body" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
                                         {t('TotalInVat')}:
                                         {/* €{((((Math.round(priceOfItem?.price * 100) / 100) * ((items?.product?.vat) / 100) * selectedQuantity)) + ((Math.round(priceOfItem?.price * 100) / 100) * selectedQuantity)).toFixed(2)} */}
- 
+
                                         {
                                             items?.total_amount_including_vat || "NULL"
                                         }
                                     </Typography>
- 
+
                                 </>
                             ) : (
                                 <>
@@ -189,7 +190,7 @@ const ItemCard = ({ items, index }) => {
                             )}
                         </Box>
                     </Box>
- 
+
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', padding: '10px', borderTop: '1px solid #fff', backgroundColor: '#f2f2f2' }}>
                         <IconButton
                             onClick={() => handleDeleteItem(items?.product?.ItemNo, items?.quantity)}
@@ -205,7 +206,7 @@ const ItemCard = ({ items, index }) => {
                             color="info"
                             onClick={() => {
                                 if (user) {
-                                    handleDecrement(items?.product?.id, items?.product?.ItemNo);
+                                    handleDecrement(items?.product?.ItemNo);
                                 } else {
                                     toast.error("Login first");
                                 }
@@ -218,7 +219,7 @@ const ItemCard = ({ items, index }) => {
                             color="success"
                             onClick={() => {
                                 if (user) {
-                                    handleIncrement(items?.product?.id, items?.product?.ItemNo);
+                                    handleIncrement(items?.product?.ItemNo);
                                 } else {
                                     toast.error("Login first");
                                 }
@@ -231,5 +232,5 @@ const ItemCard = ({ items, index }) => {
         </>
     );
 }
- 
+
 export default ItemCard;
