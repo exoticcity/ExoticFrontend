@@ -44,6 +44,7 @@ const Login = () => {
             navigate("/");
             toast.success("Login Successfully")
         } catch (error) {
+            setIsLoggingIn(false)
             toast.error("Access denied: wrong username or password.");
         }
     };

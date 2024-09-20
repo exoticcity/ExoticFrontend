@@ -21,6 +21,9 @@ const Signup = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
     const [showPass, setShowPass] = useState(false);
+    const [email, setEmail] = useState("");
+    const [status, setstatus] = useState("");
+
 
     // STATES
     const [postCodes, setPostCodes] = useState([]);
@@ -38,87 +41,110 @@ const Signup = () => {
     const handleTogglePasswordVisibility = () => {
         setShowPass((prevShowPass) => !prevShowPass);
     };
+
+
+    useEffect(() => {
+        axios.post(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/bcemailvalidation/`, {
+            email: email
+        })
+            .then((res) => {
+                console.log("emailaded", res?.status);
+                setstatus(res?.status)
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }, [email]);
+
+
     // CUSTOMER API
     const handleFormSubmit = async (data) => {
-        try {
-            const datas = {
-                "Name": data?.Name,
-                "EMail": data?.Email,
-                "Address": data?.Address,
-                "Address2": data?.Address2,
-                "City": selectedCityCode,
-                "PhoneNo": data?.phoneNumber,
-                "PostCode": selectedCityCode,
-                "County": selectedCountryCode,
-                "LanguageCode": language,
-            };
 
-            toast.success(`Your profile is being validated, please be patient`);
+        if (status === 200) {
+            try {
+                const datas = {
+                    "Name": data?.Name,
+                    "EMail": data?.Email,
+                    "Address": data?.Address,
+                    "Address2": data?.Address2,
+                    "City": selectedCityCode,
+                    "PhoneNo": data?.phoneNumber,
+                    "PostCode": selectedCityCode,
+                    "County": selectedCountryCode,
+                    "LanguageCode": language,
+                };
 
-            const res = await axios.post(
-                "https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer/",
-                datas,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessTokenUrl}`
+                toast.success(`Your profile is being validated, please be patient`);
+
+                const res = await axios.post(
+                    "https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer/",
+                    datas,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessTokenUrl}`
+                        }
                     }
+                );
+
+                const customerId = res?.data?.No;
+
+                if (!customerId) {
+                    throw new Error('Failed to get customer ID from response');
                 }
-            );
 
-            const customerId = res?.data?.No;
+                await axios.patch(
+                    `https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer(${res?.data?.SystemId})`,
+                    {
+                        ...(selectedCountryCode === "BE" ? { "EnterpriseNo": data?.enterprise_no } : { "VATRegistrationNo": data?.VATRegistrationNo })
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessTokenUrl}`,
+                            'Content-Type': 'application/json',
+                            'If-Match': '*'
+                        }
+                    }
+                );
+                await axios.post(
+                    "https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/create/",
+                    {
+                        "customer_id": customerId,
+                        "name": data?.Name,
+                        "email": data?.Email,
+                        "addressLine1": data?.Address,
+                        "region_code": selectedCountryCode,
+                        "city": selectedCityCode,
+                        "language_code": language,
+                        "postalCode": parseInt(selectedCityCode),
+                        "addressLine2": data?.Address2,
+                        "enterprise_no": parseInt(data?.enterprise_no),
+                        "VATRegistrationNo": parseInt(data?.VATRegistrationNo),
+                        "phoneNumber": parseInt(data?.phoneNumber),
+                        "mobile_phoneNumber": parseInt(data?.mobile_phoneNumber),
+                        "password": data?.password,
+                        "CustomerPriceGroup": "L1",
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": csrfToken,
+                        }
+                    }
+                );
 
-            if (!customerId) {
-                throw new Error('Failed to get customer ID from response');
+                toast.success('Account created successfully');
+                navigate("/Login");
+            } catch (error) {
+                console.error("An error occurred thissss:", error?.response?.data?.email);
+                toast.error(`${error?.response?.data?.email}`)
+            } finally {
+                setLoading(false);
             }
-
-            await axios.patch(
-                `https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer(${res?.data?.SystemId})`,
-                {
-                    ...(selectedCountryCode === "BE" ? { "EnterpriseNo": data?.enterprise_no } : { "VATRegistrationNo": data?.VATRegistrationNo })
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessTokenUrl}`,
-                        'Content-Type': 'application/json',
-                        'If-Match': '*'
-                    }
-                }
-            );
-            await axios.post(
-                "https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/create/",
-                {
-                    "customer_id": customerId,
-                    "name": data?.Name,
-                    "email": data?.Email,
-                    "addressLine1": data?.Address,
-                    "region_code": selectedCountryCode,
-                    "city": selectedCityCode,
-                    "language_code": language,
-                    "postalCode": parseInt(selectedCityCode),
-                    "addressLine2": data?.Address2,
-                    "enterprise_no": parseInt(data?.enterprise_no),
-                    "VATRegistrationNo": parseInt(data?.VATRegistrationNo),
-                    "phoneNumber": parseInt(data?.phoneNumber),
-                    "mobile_phoneNumber": parseInt(data?.mobile_phoneNumber),
-                    "password": data?.password,
-                    "CustomerPriceGroup": "L1",
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken,
-                    }
-                }
-            );
-
-            toast.success('Account created successfully');
-            navigate("/Login");
-        } catch (error) {
-            console.error("An error occurred thissss:", error);
-            toast.error(`${error}`)
-        } finally {
-            setLoading(false);
+        }else {
+            console.log("Error: Not Valid");
+            
         }
+
     };
 
     // Dropdown APIS
@@ -156,7 +182,8 @@ const Signup = () => {
                             <Grid item xs={12} sm={6}>
                                 <Box sx={{ pt: '2rem' }}>
                                     <Typography sx={{ fontSize: '13px', fontFamily: 'Montserrat' }}>{t('Name')}</Typography>
-                                    <TextField type="text" size="small" fullWidth {...register('Name', { required: true })} />
+                                    <TextField type="text" size="small" onChange={(e) => setEmail(e.target.value)}
+                                        fullWidth {...register('Name', { required: true })} />
                                 </Box>
                             </Grid>
                             {/* Email */}
