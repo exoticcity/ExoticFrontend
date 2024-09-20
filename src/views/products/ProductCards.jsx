@@ -115,7 +115,7 @@ const ProductCards = ({ item, url, setUrl }) => {
         return Object.keys(storedItems).length === 0;
     };
 
-    const handleIncrement = (id) => {
+    const handleIncrement = (id, itemNo) => {
         const item = data.find(item => item?.id === id);
         if (item && item.Quantity > 0) {
             const newQuantity = Number(inputQuantity[id] || 0) + 1;
@@ -124,6 +124,7 @@ const ProductCards = ({ item, url, setUrl }) => {
             toast.error("Item Out of Stock");
         }
     };
+   
 
     const handleDecrement = (id) => {
         const newQuantity = Number(inputQuantity[id] || 0) - 1;
@@ -247,7 +248,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                             color="success"
                             onClick={() => {
                                 if (user) {
-                                    item.Quantity === 0 ? toast.error("Item Out of Stock") : handleIncrement(item.id);
+                                    item.Quantity === 0 ? toast.error("Item Out of Stock") : handleIncrement(item?.id, item?.ItemNo);
                                 } else {
                                     toast.error(item.Quantity === 0 ? "Login first" : "Login first");
                                 }

@@ -18,6 +18,11 @@ const ItemCard = ({ items, index }) => {
     const [selectedQuantity, setSelectedQuantity] = useState(items?.quantity)
 
     useEffect(() => {
+        setSelectedQuantity(items?.quantity)
+    }, [items?.quantity])
+
+
+    useEffect(() => {
         axios.get(`https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer?$filter=No eq '${user}'`, {
             headers: {
                 Authorization: `Bearer ${accessTokenUrl}`,
@@ -69,15 +74,13 @@ const ItemCard = ({ items, index }) => {
         localStorage.setItem('currentItem', JSON.stringify(itemDetails));
     };
 
-
-
-    const handleIncrement = async ( itemNo) => {
+    const handleIncrement = async (itemNo) => {
         const newQuantity = selectedQuantity + 1;
         setSelectedQuantity(newQuantity);
         updateCartQuantity(itemNo, newQuantity);
     };
 
-    const handleDecrement = async ( itemNo) => {
+    const handleDecrement = async (itemNo) => {
         const newQuantity = selectedQuantity - 1;
         if (newQuantity >= 0) {
             setSelectedQuantity(newQuantity);
@@ -99,7 +102,6 @@ const ItemCard = ({ items, index }) => {
         }
         window.location.reload()
     };
-
 
     const handleDeleteItem = async (itemNo, quantity) => {
         try {
