@@ -27,7 +27,7 @@ const Contact = () => {
   };
 
   return (
-    <Grid container sx={{ width: '100%', height: '100%', alignItems: 'center'}}>
+    <Grid container sx={{ width: '100%', height: '100%', alignItems: 'center' }}>
       <Grid item xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center' }}>
         <Box sx={{ width: '90%' }}>
           <Typography variant="h4" sx={{ textAlign: 'left', fontWeight: '600', mb: '1rem' }}>{t('CONTACT US')}</Typography>
@@ -41,8 +41,8 @@ const Contact = () => {
         <Box sx={{ width: '90%' }}>
           <form ref={form} onSubmit={sendEmail}>
             <Box sx={{ mt: { xs: '1rem', sm: 0 }, display: 'flex', flexDirection: 'column' }}>
-              <TextField fullWidth label="Name" size="small" name="user_name" required />
-              <TextField sx={{ mt: '1rem' }} fullWidth label="Email" size="small" type="email" name="user_email" required />
+              <TextField fullWidth label="Name" size="small" type="text" name="user_email" required />
+              <TextField sx={{ mt: '1rem' }} fullWidth label="Email" size="small" name="user_name" required />
               <TextField sx={{ mt: '1rem' }} fullWidth label="Message" multiline rows={4} name="message" required />
               <Box sx={{ mt: '1rem', display: 'flex', justifyContent: 'space-between' }}>
                 <TermsConditions />
