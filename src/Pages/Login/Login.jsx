@@ -29,7 +29,7 @@ const Login = () => {
             const response = await axios.post(
                 'https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/login/',
                 {
-                    "username": data.username,
+                    "username": data.username.toLowerCase(),
                     "password": data.password
                 },
                 {
