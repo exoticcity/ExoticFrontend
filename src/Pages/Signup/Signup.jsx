@@ -59,10 +59,19 @@ const Signup = () => {
 
     // CUSTOMER API
     const handleFormSubmit = async (data) => {
-
-        if (status === 200) {
-            try {
-                const datas = {
+        try {
+            // Step 1: Validate email
+            const emailValidationResponse = await axios.post(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/bcemailvalidation/`, {
+                email: data?.Email
+            });
+    
+            // Check if email validation was successful
+            if (emailValidationResponse.status === 200) {
+                // Proceed if email validation is successful
+                toast.success('Email validated successfully.');
+    
+                // Step 2: Prepare customer data
+                const customerData = {
                     "Name": data?.Name,
                     "EMail": data?.Email,
                     "Address": data?.Address,
@@ -73,30 +82,34 @@ const Signup = () => {
                     "County": selectedCountryCode,
                     "LanguageCode": language,
                 };
-
+    
                 toast.success(`Your profile is being validated, please be patient`);
-
-                const res = await axios.post(
+    
+                // Step 3: Create customer in Business Central
+                const createCustomerResponse = await axios.post(
                     "https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer/",
-                    datas,
+                    customerData,
                     {
                         headers: {
                             Authorization: `Bearer ${accessTokenUrl}`
                         }
                     }
                 );
-
-                const customerId = res?.data?.No;
-
+    
+                const customerId = createCustomerResponse?.data?.No;
+    
                 if (!customerId) {
                     throw new Error('Failed to get customer ID from response');
                 }
-
+    
+                // Step 4: Update customer with VAT or Enterprise number
+                const customerPatchData = selectedCountryCode === "BE"
+                    ? { "EnterpriseNo": data?.enterprise_no }
+                    : { "VATRegistrationNo": data?.VATRegistrationNo };
+    
                 await axios.patch(
-                    `https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer(${res?.data?.SystemId})`,
-                    {
-                        ...(selectedCountryCode === "BE" ? { "EnterpriseNo": data?.enterprise_no } : { "VATRegistrationNo": data?.VATRegistrationNo })
-                    },
+                    `https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer(${createCustomerResponse?.data?.SystemId})`,
+                    customerPatchData,
                     {
                         headers: {
                             Authorization: `Bearer ${accessTokenUrl}`,
@@ -105,6 +118,8 @@ const Signup = () => {
                         }
                     }
                 );
+    
+                // Step 5: Save customer data to external server
                 await axios.post(
                     "https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/create/",
                     {
@@ -131,21 +146,23 @@ const Signup = () => {
                         }
                     }
                 );
-
+    
                 toast.success('Account created successfully');
                 navigate("/Login");
-            } catch (error) {
-                console.error("An error occurred thissss:", error?.response?.data?.email);
-                toast.error(`${error?.response?.data?.email}`)
-            } finally {
-                setLoading(false);
+            } else {
+                // If email validation fails, show error from the API response
+                toast.error(`Email validation failed: ${emailValidationResponse.data?.message || 'Unknown error'}`);
             }
-        }else {
-            console.log("Error: Not Valid");
-            
+    
+        } catch (error) {
+            // Handle errors in any of the steps
+            console.error("An error occurred:", error?.response?.data);
+            toast.error(`Error: ${error?.response?.data}`);
+        } finally {
+            setLoading(false);
         }
-
     };
+    
 
     // Dropdown APIS
     const apiInstance = axios.create({
