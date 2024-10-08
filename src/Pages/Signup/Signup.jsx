@@ -154,12 +154,12 @@ const Signup = () => {
             } else {
                 // If email validation fails, show error from the API response
                 toast.error(`Email validation failed: ${emailValidationResponse.data?.message || 'Unknown error'}`);
+                console.log(emailValidationResponse, emailValidationResponse?.data);
+                
             }
     
         } catch (error) {
-            // Handle errors in any of the steps
-            console.error("An error occurred:", error?.response?.data);
-            toast.error(`Error: ${error?.response?.data}`);
+            toast.error(`Error: ${error?.response?.data?.error?.message ?error?.response?.data?.error?.message: error?.response?.data?.email}`);
         } finally {
             setLoading(false);
         }
