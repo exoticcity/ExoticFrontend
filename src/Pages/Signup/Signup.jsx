@@ -107,17 +107,7 @@ const Signup = () => {
                     ? { "EnterpriseNo": data?.enterprise_no }
                     : { "VATRegistrationNo": data?.VATRegistrationNo };
     
-                await axios.patch(
-                    `https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer(${createCustomerResponse?.data?.SystemId})`,
-                    customerPatchData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${accessTokenUrl}`,
-                            'Content-Type': 'application/json',
-                            'If-Match': '*'
-                        }
-                    }
-                );
+                
     
                 // Step 5: Save customer data to external server
                 await axios.post(
@@ -143,6 +133,18 @@ const Signup = () => {
                         headers: {
                             "Content-Type": "application/json",
                             "X-CSRFToken": csrfToken,
+                        }
+                    }
+                );
+
+                await axios.patch(
+                    `https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer(${createCustomerResponse?.data?.SystemId})`,
+                    customerPatchData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessTokenUrl}`,
+                            'Content-Type': 'application/json',
+                            'If-Match': '*'
                         }
                     }
                 );
