@@ -64,12 +64,12 @@ const Signup = () => {
             const emailValidationResponse = await axios.post(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/bcemailvalidation/`, {
                 email: data?.Email
             });
-    
+
             // Check if email validation was successful
             if (emailValidationResponse.status === 200) {
                 // Proceed if email validation is successful
                 toast.success('Email validated successfully.');
-    
+
                 // Step 2: Prepare customer data
                 const customerData = {
                     "Name": data?.Name,
@@ -82,9 +82,9 @@ const Signup = () => {
                     "County": selectedCountryCode,
                     "LanguageCode": language,
                 };
-    
+
                 toast.success(`Your profile is being validated, please be patient`);
-    
+
                 // Step 3: Create customer in Business Central
                 const createCustomerResponse = await axios.post(
                     "https://api.businesscentral.dynamics.com/v2.0/Live/api/bctech/demo/v2.0/Companies(f03f6225-081c-ec11-bb77-000d3abcd65f)/customer/",
@@ -95,20 +95,20 @@ const Signup = () => {
                         }
                     }
                 );
-    
+
                 const customerId = createCustomerResponse?.data?.No;
-    
+
                 if (!customerId) {
                     throw new Error('Failed to get customer ID from response');
                 }
-    
+
                 // Step 4: Update customer with VAT or Enterprise number
                 const customerPatchData = selectedCountryCode === "BE"
                     ? { "EnterpriseNo": data?.enterprise_no }
                     : { "VATRegistrationNo": data?.VATRegistrationNo };
-    
-                
-    
+
+
+
                 // Step 5: Save customer data to external server
                 await axios.post(
                     "https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/create/",
@@ -148,23 +148,25 @@ const Signup = () => {
                         }
                     }
                 );
-    
+
                 toast.success('Account created successfully');
                 navigate("/Login");
             } else {
                 // If email validation fails, show error from the API response
                 toast.error(`Email validation failed: ${emailValidationResponse.data?.message || 'Unknown error'}`);
                 console.log(emailValidationResponse, emailValidationResponse?.data);
-                
+
             }
-    
+
         } catch (error) {
-            toast.error(`Error: ${error?.response?.data?.error?.message ?error?.response?.data?.error?.message: error?.response?.data?.email}`);
+            toast.error("Customer Already Exists in Bussiness Central!");
+            console.log("Customer Already Exists in Bussiness Central!");
+            
         } finally {
             setLoading(false);
         }
     };
-    
+
 
     // Dropdown APIS
     const apiInstance = axios.create({
