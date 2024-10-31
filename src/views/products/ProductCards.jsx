@@ -64,7 +64,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                         setLoading(false);
                     });
             }
-        }, [CustomerPG, inputQuantity[item.id], itemPrice, item?.ItemNo]);
+        }, [CustomerPG, inputQuantity[item.id], item?.ItemNo]);
     }
 
     const addToCart = async (id) => {
