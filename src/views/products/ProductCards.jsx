@@ -27,15 +27,15 @@ const ProductCards = ({ item, url, setUrl }) => {
     const { data, currentPage, user, accessTokenUrl, isIncrement, setIsIncrement, cartData, setChange, cart, inputQuantity, setInputQuantity } = useContext(Context);
     let CustomerPG = localStorage.getItem('CustomerPriceGroup')
     useLayoutEffect(() => {
-        setInputQuantity(isIncrement[item.id])
-    }, [setInputQuantity])
+        setInputQuantity(isIncrement[item?.id])
+    }, [setInputQuantity, isIncrement[item?.id]])
 
     useEffect(() => {
         setInputQuantity(prev => ({
             ...prev,
-            [item.id]: (isIncrement[item.id] || 0)
+            [item?.id]: (isIncrement[item?.id] || 0)
         }));
-    }, [item.id]);
+    }, [item?.id]);
 
     const handleQuantityChange = (id, value) => {
         const numericalValue = parseInt(value, 10);
@@ -49,11 +49,12 @@ const ProductCards = ({ item, url, setUrl }) => {
         }));
     };
 
+
     if (user) {
-        useLayoutEffect(() => {
-            const incrementValue = JSON.stringify(isIncrement[item.id] || 0);
-            if (item?.ItemNo !== undefined || 0 && CustomerPG !== undefined || 0 && incrementValue !== undefined || 0) {
-                axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${item?.ItemNo}/${CustomerPG}/${incrementValue}`)
+        useEffect(() => {
+            const incrementValue = JSON.stringify(inputQuantity[item?.id] || 0);
+            if (item?.ItemNo !== undefined || 0 && CustomerPG !== undefined || 0 && inputQuantity[item?.id] !== undefined) {
+                axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${item?.ItemNo}/${CustomerPG}/${inputQuantity[item?.id] || 1}`)
                     .then((res) => {
                         setItemPrice(res?.data)
                     })
@@ -63,7 +64,7 @@ const ProductCards = ({ item, url, setUrl }) => {
                         setLoading(false);
                     });
             }
-        }, [CustomerPG, data]);
+        }, [CustomerPG, inputQuantity[item.id], itemPrice, item?.ItemNo]);
     }
 
     const addToCart = async (id) => {
@@ -117,19 +118,34 @@ const ProductCards = ({ item, url, setUrl }) => {
 
     const handleIncrement = (id, itemNo) => {
         const item = data.find(item => item?.id === id);
+
         if (item && item.Quantity > 0) {
             const newQuantity = Number(inputQuantity[id] || 0) + 1;
-            handleQuantityChange(id, newQuantity);
+            handleQuantityChange(id, newQuantity); // Update quantity
+            axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${itemNo}/${CustomerPG}/${newQuantity}`)
+                .then((res) => {
+                    setItemPrice(res?.data);
+                })
+                .catch((err) => {
+                    console.log("Error:", err);
+                });
         } else {
             toast.error("Item Out of Stock");
         }
     };
-   
 
     const handleDecrement = (id) => {
         const newQuantity = Number(inputQuantity[id] || 0) - 1;
         if (newQuantity >= 0) {
-            handleQuantityChange(id, newQuantity);
+            handleQuantityChange(id, newQuantity); // Update quantity
+            fetchUpdatedPrice(item?.ItemNo, CustomerPG, newQuantity); // Fetch updated price
+            axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${item?.ItemNo}/${CustomerPG}/${newQuantity}`)
+                .then((res) => {
+                    setItemPrice(res?.data);
+                })
+                .catch((err) => {
+                    console.log("Error:", err);
+                });
         }
     };
 
@@ -147,7 +163,7 @@ const ProductCards = ({ item, url, setUrl }) => {
             }).finally(() => {
                 setLoading(false);
             });
-    }, [accessTokenUrl, picture, item?.ItemNo]);
+    }, [accessTokenUrl, picture, item]);
 
     // USE-EFFECT
     useEffect(() => {

@@ -240,7 +240,7 @@ const RequestQuote = () => {
       <Grid item xs={12} md={4}>
         <Paper elevation={2} sx={{ p: 3, m: 1, width: '95%', minHeight: '70vh' }}>
           {
-            cartData.length >= 1 ? (
+            cartData?.length >= 1 ? (
               <>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="h6" sx={{ fontWeight: 600, textTransform: 'uppercase', fontFamily: 'Monteserrat' }}>{t('OrderSummary')}</Typography>
@@ -249,19 +249,19 @@ const RequestQuote = () => {
                 {userObj?.CustomerPostingGroup === "LOCAL" || userObj?.CustomerPostingGroup === "PARTICULIER" ? (
                   <>
                     <Typography variant="h6" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
-                      {t('TotalExVat')}: {(totalPrice.total_amount_excluding_vat)?.toFixed(2)}
+                      {t('TotalExVat')}: {(totalPrice?.total_amount_excluding_vat)?.toFixed(2)}
                     </Typography>
                     <Typography variant="h6" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
-                      {t('Vat Amount')}:  {(totalPrice.vat_amount)?.toFixed(2)}
+                      {t('Vat Amount')}:  {(totalPrice?.vat_amount)?.toFixed(2)}
                     </Typography>
                     <Typography variant="h6" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
-                      {t('TotalInVat')}: {(totalPrice.total_amount_including_vat)?.toFixed(2)}
+                      {t('TotalInVat')}: {(totalPrice?.total_amount_including_vat)?.toFixed(2)}
                     </Typography>
                   </>
                 ) : (
                   <>
                     <Typography variant="h6" sx={{ fontSize: '12px', fontFamily: 'Monteserrat' }}>
-                      {t('Total Amount')}: € {isPricesLoading ? 'Loading...' : (isNaN(totalPrice.total_amount_excluding_vat) ? '0.00' : totalPrice.total_amount_excluding_vat.toFixed(2))}
+                      {t('Total Amount')}: € {isPricesLoading ? 'Loading...' : (isNaN(totalPrice?.total_amount_excluding_vat) ? '0.00' : totalPrice?.total_amount_excluding_vat.toFixed(2))}
                     </Typography>
                   </>
                 )}

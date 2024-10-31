@@ -8,18 +8,28 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const ItemCard = ({ items, index }) => {
     const { t } = useTranslation();
-    const { setIsIncrement, isIncrement, user, data, setData, setChange, accessTokenUrl, setCart, cartData, setCartData } = useContext(Context);
+    const { setIsIncrement, isIncrement, user, data, setData, setChange, setCart, cartData, setCartData } = useContext(Context);
     const [userObj, setUserObj] = useState({});
     const [priceOfItem, setPriceOfItem] = useState([]);
     const [picture, setPicture] = useState('');
     const CustomerPG = localStorage.getItem('CustomerPriceGroup');
     const [cartItems, setcartItems] = useState([])
+    const [accessTokenUrl, setAccessTokenUrl] = useState([])
 
     const [selectedQuantity, setSelectedQuantity] = useState(items?.quantity)
 
     useEffect(() => {
         setSelectedQuantity(items?.quantity)
     }, [items?.quantity])
+
+    useEffect(() => {
+        axios.get("https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getAccessToken/")
+            .then((res) => {
+                setAccessTokenUrl(res.data.access_token)
+            }).catch((err) => {
+                console.log("err" + err);
+            })
+    }, [setAccessTokenUrl, items])
 
 
     useEffect(() => {
@@ -55,7 +65,7 @@ const ItemCard = ({ items, index }) => {
 
     useEffect(() => {
         if (items?.product?.ItemNo !== undefined || 0 && CustomerPG !== undefined || 0 && isIncrement[items?.product?.id] !== undefined || 0) {
-            axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${items?.product?.ItemNo}/${CustomerPG}/${isIncrement[items?.product?.id] || 0}`)
+            axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${items?.product?.ItemNo}/${CustomerPG}/${isIncrement[items?.product?.id] || 0 || 1}`)
                 .then((res) => {
                     setPriceOfItem(res?.data);
                     saveItemToLocalStorage(res?.data);

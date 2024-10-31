@@ -32,14 +32,14 @@ const Footer = () => {
               <Box sx={{ width: '20%', height: '4px', backgroundColor: 'orange', margin: '8px 0', mb: '30px' }} ></Box>
               <ul className="text-gray-500 dark:text-gray-400 font-medium">
                 <li className="mb-3" style={{ fontFamily: "Montserrat", fontSize: '11px', fontWeight: 600, color: 'lightgray' }}>
-                  Av. de l Expansion 1
+                  Avenue de l Expansion 1
                 </li>
                 <li className="" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }}>
-                  <LocationOnIcon sx={{ fontSize: '16px', cursor: 'pointer' }} /> 4432 Alleur
+                  <LocationOnIcon sx={{ fontSize: '16px', cursor: 'pointer' }} /> 4432 Alleur - Belgium
                 </li>
                 <Box sx={{ width: '80%', height: '1px', backgroundColor: 'lightgray', margin: '8px 0' }} ></Box>
                 <li className="" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }} onClick={openWhatsApp}>
-                  <WhatsAppIcon sx={{ fontSize: '16px', cursor: 'pointer' }} /> +324850001400
+                  <WhatsAppIcon sx={{ fontSize: '16px', cursor: 'pointer' }} /> +32485001400
                 </li>
                 <Box sx={{ width: '80%', height: '1px', backgroundColor: 'lightgray', margin: '8px 0' }} ></Box>
                 <li className="" style={{ fontFamily: "Montserrat", fontSize: '11px', color: 'lightgray' }} onClick={() => window.location.href = 'mailto:info@exoticcity.be'}>

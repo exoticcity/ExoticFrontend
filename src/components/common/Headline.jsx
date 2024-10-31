@@ -25,7 +25,7 @@ const Headline = () => {
           sx={{ color: '#A8A8A8', fontSize: '13px', pt: '4px', pl: '10px', cursor: 'pointer', fontFamily: "Montserrat" }}
           onClick={openWhatsApp}
         >
-          (<WhatsAppIcon sx={{ color: '#000', width: '15px' }} />: +324850001400)
+          (<WhatsAppIcon sx={{ color: '#000', width: '15px' }} />: +32485001400)
         </Typography>      </Box>
     </Grid>
   )

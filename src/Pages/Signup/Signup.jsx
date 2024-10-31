@@ -149,7 +149,12 @@ const Signup = () => {
                     }
                 );
 
-                toast.success('Account created successfully');
+                toast.success(
+                    'Account created successfully. You will be able to log in once your profile is approved by Exotic City. Kindly contact (+32485001400)',
+                    {
+                        autoClose: 20000,
+                    }
+                );
                 navigate("/Login");
             } else {
                 // If email validation fails, show error from the API response
@@ -159,9 +164,9 @@ const Signup = () => {
             }
 
         } catch (error) {
-            toast.error("Customer Already Exists in Bussiness Central!");
+            toast.error("Customer Already Exists in Exotic City, kindly contact (+32485001400)");
             console.log("Customer Already Exists in Bussiness Central!");
-            
+
         } finally {
             setLoading(false);
         }

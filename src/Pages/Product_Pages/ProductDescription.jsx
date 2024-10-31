@@ -57,7 +57,7 @@ const ProductDescription = () => {
     useEffect(() => {
         const fetchPrice = async () => {
             try {
-                const res = await axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${product?.ItemNo}/${customerPG}/${isIncrement[product?.id] || 0}`);
+                const res = await axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${product?.ItemNo}/${customerPG}/${isIncrement[product?.id] || 1 || 0}`);
                 setPriceOfProduct(res?.data);
             } catch (err) {
                 console.error("Error fetching price:", err);
@@ -67,7 +67,7 @@ const ProductDescription = () => {
         if (customerPG && product) {
             fetchPrice();
         }
-    }, [customerPG, isIncrement, product]);
+    }, [customerPG, isIncrement, product?.ItemNo]);
 
     if (!product) {
         return <div>Item not found</div>;
@@ -83,6 +83,13 @@ const ProductDescription = () => {
         const newQuantity = quantity + 1;
         setQuantity(newQuantity);
         modifyCart(newQuantity);
+        axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getPrice/${product?.ItemNo}/${customerPG}/${newQuantity}`)
+            .then((res) => {
+                setItemPrice(res?.data);
+            })
+            .catch((err) => {
+                console.log("Error:", err);
+            });
     };
 
     const handleDecrement = () => {
@@ -152,12 +159,12 @@ const ProductDescription = () => {
                             <Typography variant="body2" sx={{ mb: '10px' }}>Brand:</Typography>
                         </Grid>
                         <Grid item xs={6} textAlign="right">
-                            <Typography variant="body2" sx={{ mb: '10px' }}>{product.ItemNo}</Typography>
+                            <Typography variant="body2" sx={{ mb: '10px' }}>{product?.ItemNo}</Typography>
                             <Typography variant="body2" sx={{ mb: '10px' }}>{userID ? (Math.round(priceOfProduct?.price * 100) / 100).toFixed(2) : "Login To View Price"}</Typography>
-                            <Typography variant="body2" sx={{ mb: '10px' }}>{product.BarCode}</Typography>
-                            <Typography variant="body2" sx={{ mb: '10px' }}>{product.SalesUnitOfMeasure}</Typography>
-                            <Typography variant="body2" sx={{ mb: '10px' }}>{product.WeightDescription}</Typography>
-                            <Typography variant="body2" sx={{ mb: '10px' }}>{product.Brand}</Typography>
+                            <Typography variant="body2" sx={{ mb: '10px' }}>{product?.BarCode}</Typography>
+                            <Typography variant="body2" sx={{ mb: '10px' }}>{product?.SalesUnitOfMeasure}</Typography>
+                            <Typography variant="body2" sx={{ mb: '10px' }}>{product?.WeightDescription}</Typography>
+                            <Typography variant="body2" sx={{ mb: '10px' }}>{product?.Brand}</Typography>
                         </Grid>
                     </Grid>
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', padding: '10px', borderTop: '1px solid #fff', backgroundColor: '#f2f2f2' }}>
@@ -167,9 +174,9 @@ const ProductDescription = () => {
                             color="info"
                             onClick={() => {
                                 if (user) {
-                                    product.Quantity === 0 ? toast.error("product Out of Stock") : handleDecrement(product.id);
+                                    product?.Quantity === 0 ? toast.error("product Out of Stock") : handleDecrement(product?.id);
                                 } else {
-                                    toast.error(product.Quantity === 0 ? "Login first" : "Login first");
+                                    toast.error(product?.Quantity === 0 ? "Login first" : "Login first");
                                 }
                             }}
                             sx={{ fontSize: '14px', backgroundColor: '#fff', color: 'red', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: 'red', color: '#fff', }, }}  > - </Button>
@@ -179,9 +186,9 @@ const ProductDescription = () => {
                             color="success"
                             onClick={() => {
                                 if (user) {
-                                    product.Quantity === 0 ? toast.error("Item Out of Stock") : handleIncrement(product.id);
+                                    product?.Quantity === 0 ? toast.error("Item Out of Stock") : handleIncrement(product?.id, product?.ItemNo);
                                 } else {
-                                    toast.error(product.Quantity === 0 ? "Login first" : "Login first");
+                                    toast.error(product?.Quantity === 0 ? "Login first" : "Login first");
                                 }
                             }}
                             sx={{ fontSize: '14px', backgroundColor: '#fff', color: 'green', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: 'green', color: '#fff', }, }}> + </Button>
