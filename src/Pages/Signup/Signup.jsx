@@ -21,8 +21,10 @@ const Signup = () => {
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
     const [showPass, setShowPass] = useState(false);
+    const [isRegistering, setisRegistering] = useState(false);
     const [email, setEmail] = useState("");
     const [status, setstatus] = useState("");
+
 
 
     // STATES
@@ -34,6 +36,7 @@ const Signup = () => {
     const [selectedCityCode, setSelectedCityCode] = useState('');
 
     // FUNCTIONS
+
     const handleCountryChange = (e) => { const countryCode = e.target.value; setSelectedCountryCode(countryCode); setSelectedCityCode(''); };
     const handleCityChange = (e) => { const cityCode = e.target.value; setSelectedCityCode(cityCode); };
     const filteredPostCodes = postCodes.filter((postcode) => postcode.Country_Region_Code === selectedCountryCode);
@@ -59,6 +62,7 @@ const Signup = () => {
 
     // CUSTOMER API
     const handleFormSubmit = async (data) => {
+        setisRegistering(true)
         try {
             // Step 1: Validate email
             const emailValidationResponse = await axios.post(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/customers/bcemailvalidation/`, {
@@ -166,6 +170,7 @@ const Signup = () => {
         } catch (error) {
             toast.error("Customer Already Exists in Exotic City, kindly contact (+32485001400)");
             console.log("Customer Already Exists in Bussiness Central!");
+            setisRegistering(false)
 
         } finally {
             setLoading(false);
@@ -416,7 +421,7 @@ const Signup = () => {
                         </Grid>
                         {/* Submit Button */}
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pt: '20px' }}>
-                            <Button variant='contained' color='primary' type='submit' sx={{ fontFamily: 'Montserrat', display: 'flex', justifyContent: 'space-between', px: '20px', fontSize: '13px', fontWeight: 600, backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }} >
+                            <Button variant='contained' color='primary' type='submit' disabled={isRegistering} sx={{ fontFamily: 'Montserrat', display: 'flex', justifyContent: 'space-between', px: '20px', fontSize: '13px', fontWeight: 600, backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }} >
                                 <AppRegistrationIcon sx={{ fontSize: '14px' }} /> {loading ? t('Registering') : t('Register')}
                             </Button>
                             <Typography sx={{ fontSize: '13px', fontFamily: 'Montserrat' }}>
