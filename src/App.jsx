@@ -44,6 +44,7 @@ function App() {
     return parsedData;
   });
   const [cartData, setCartData] = useState([])
+  const [selectedQuantity, setSelectedQuantity] = useState()
 
   // const [user, setUser] = useState(null)
   const [search, setSearch] = useState('');
@@ -148,7 +149,7 @@ function App() {
   ));
 
   return (
-    <Context.Provider value={{ otpValue, setOtpValue, counts, setCounts, data, setData, loading, setLoading, itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, nextUrl, setNextUrl, prevUrl, setPrevUrl, parentCategory, setParentCategory, category, setCategory, subcategory, setSubCategory, filterproducts, setFilterProducts, selectedCategory, setSelectedCategory, filteredCategories, setFilteredCategories, filteredSubCategories, setFilteredSubCategories, prices, setPrices, nextPriceUrl, setNextPriceUrl, prevPriceUrl, setPrevPriceUrl, nextFilterUrl, setNextFilterUrl, prevFilterUrl, setPrevFilterUrl, isBrand, setisBrand, selectedSubCategories, setSelectedSubCategories, parentData, setParentData, accessTokenUrl, isIncrement, setIsIncrement, user, handleParentClick, search, setSearch, brand, setBrand, customerPriceGroup, setCustomerPriceGroup, cart, setCart, orderno, setorderno, totalPrice, setTotalPrice, getPriceForCustomerGroup, change, setChange, selectedCategoryIndex, setSelectedCategoryIndex, brandIndex, setBrandIndex, selectedSubCategoryIndex, setSelectedSubCategoryIndex, selectedParentCategory, setSelectedParentCategory, inputQuantity, setInputQuantity, cartData, setCartData }}>
+    <Context.Provider value={{ otpValue, setOtpValue, counts, setCounts, data, setData, loading, setLoading, itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, nextUrl, setNextUrl, prevUrl, setPrevUrl, parentCategory, setParentCategory, category, setCategory, subcategory, setSubCategory, filterproducts, setFilterProducts, selectedCategory, setSelectedCategory, filteredCategories, setFilteredCategories, filteredSubCategories, setFilteredSubCategories, prices, setPrices, nextPriceUrl, setNextPriceUrl, prevPriceUrl, setPrevPriceUrl, nextFilterUrl, setNextFilterUrl, prevFilterUrl, setPrevFilterUrl, isBrand, setisBrand, selectedSubCategories, setSelectedSubCategories, parentData, setParentData, accessTokenUrl, isIncrement, setIsIncrement, user, handleParentClick, search, setSearch, brand, setBrand, customerPriceGroup, setCustomerPriceGroup, cart, setCart, orderno, setorderno, totalPrice, setTotalPrice, getPriceForCustomerGroup, change, setChange, selectedCategoryIndex, setSelectedCategoryIndex, brandIndex, setBrandIndex, selectedSubCategoryIndex, setSelectedSubCategoryIndex, selectedParentCategory, setSelectedParentCategory, inputQuantity, setInputQuantity, cartData, setCartData, selectedQuantity, setSelectedQuantity }}>
       <HashRouter>
         <Suspense fallback={<Loader />}>
           <Layout className="app">

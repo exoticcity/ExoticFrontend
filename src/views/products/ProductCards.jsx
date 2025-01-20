@@ -20,12 +20,22 @@ const ProductCards = ({ item, url, setUrl }) => {
     const [isInputChanged, setIsInputChanged] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
     const [loading, setLoading] = useState(true);
+    
 
     const [postCart, setPostCart] = useState([])
 
     // USER-CONTEXT
     const { data, currentPage, user, accessTokenUrl, isIncrement, setIsIncrement, cartData, setChange, cart, inputQuantity, setInputQuantity } = useContext(Context);
     let CustomerPG = localStorage.getItem('CustomerPriceGroup')
+
+    // Initialize input quantity from local storage or set default
+    useEffect(() => {
+        const storedQuantities = JSON.parse(localStorage.getItem('inputQuantities')) || {};
+        if (storedQuantities[item?.id]) {
+            setInputQuantity(storedQuantities);
+        }
+    }, [item?.id, setInputQuantity]);
+
     useLayoutEffect(() => {
         setInputQuantity(isIncrement[item?.id])
     }, [setInputQuantity, isIncrement[item?.id]])
@@ -47,6 +57,10 @@ const ProductCards = ({ item, url, setUrl }) => {
             ...prev,
             [id]: true
         }));
+        // Update the local storage with new quantity
+        const newQuantities = JSON.parse(localStorage.getItem('inputQuantities')) || {};
+        newQuantities[id] = numericalValue;
+        localStorage.setItem('inputQuantities', JSON.stringify(newQuantities));
     };
 
 

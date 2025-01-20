@@ -205,14 +205,14 @@ const Signup = () => {
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <Card sx={{ mx: { xs: '1rem', lg: '10rem' }, width: { xs: '90vw', lg: '80vw' }, height: 'auto', p: '2.5rem', mt: '2rem' }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography variant='h4' sx={{ fontWeight: '600', fontFamily: 'Montserrat' }}>{t('Signin')}</Typography>
+                            <Typography variant='h4' sx={{ fontWeight: '600', fontFamily: 'Montserrat' }}>{t('Signup')}</Typography>
                             <img src="/assets/jpeg/LOGO.jpg" style={{ width: '140px' }} alt="Logo" />
                         </Box>
                         <Grid container spacing={2}>
                             {/* Name */}
                             <Grid item xs={12} sm={6}>
                                 <Box sx={{ pt: '2rem' }}>
-                                    <Typography sx={{ fontSize: '13px', fontFamily: 'Montserrat' }}>{t('Name')}</Typography>
+                                    <Typography sx={{ fontSize: '13px', fontFamily: 'Montserrat' }}>{t('Company Name')}</Typography>
                                     <TextField type="text" size="small" onChange={(e) => setEmail(e.target.value)}
                                         fullWidth {...register('Name', { required: true })} />
                                 </Box>

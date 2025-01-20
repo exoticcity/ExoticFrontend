@@ -15,9 +15,9 @@ import { useTranslation } from 'react-i18next'
 
 const Nav_Search = () => {
     const [isDrawerOpen, setDrawerOpen] = useState(false);
-    const { cart, cartData, setCartData } = useContext(Context);
+    const { otpValue, setOtpValue, counts, setCounts, data, setData, loading, setLoading, itemsPerPage, setItemsPerPage, currentPage, setCurrentPage, nextUrl, setNextUrl, prevUrl, setPrevUrl, parentCategory, setParentCategory, category, setCategory, subcategory, setSubCategory, filterproducts, setFilterProducts, selectedCategory, setSelectedCategory, filteredCategories, setFilteredCategories, filteredSubCategories, setFilteredSubCategories, prices, setPrices, nextPriceUrl, setNextPriceUrl, prevPriceUrl, setPrevPriceUrl, nextFilterUrl, setNextFilterUrl, prevFilterUrl, setPrevFilterUrl, isBrand, setisBrand, selectedSubCategories, setSelectedSubCategories, parentData, setParentData, accessTokenUrl, isIncrement, setIsIncrement, user, handleParentClick, search, setSearch, brand, setBrand, customerPriceGroup, setCustomerPriceGroup, cart, setCart, orderno, setorderno, totalPrice, setTotalPrice, getPriceForCustomerGroup, change, setChange, selectedCategoryIndex, setSelectedCategoryIndex, brandIndex, setBrandIndex, selectedSubCategoryIndex, setSelectedSubCategoryIndex, selectedParentCategory, setSelectedParentCategory, inputQuantity, setInputQuantity, cartData, setCartData, selectedQuantity, setSelectedQuantity } = useContext(Context);
     const usenavigate = useNavigate();
-  const { t } = useTranslation();
+    const { t } = useTranslation();
 
     // USE-STATES
     const userID = sessionStorage.getItem('user');
@@ -39,7 +39,7 @@ const Nav_Search = () => {
     };
 
     const userName = localStorage.getItem('UserDetail');
-    
+
     return (
         <Paper sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Grid container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: '20px', width: '95%' }}>
@@ -49,7 +49,7 @@ const Nav_Search = () => {
                     </IconButton>
                     <Link to="/">  <img src="/assets/jpeg/LOGO.jpg" style={{ width: '140px' }} alt="Logo" /> </Link>
                 </Grid>
-                <Grid item> <Nav_Header isDrawerOpen={isDrawerOpen} setDrawerOpen={setDrawerOpen}  /> </Grid>
+                <Grid item> <Nav_Header isDrawerOpen={isDrawerOpen} setDrawerOpen={setDrawerOpen} /> </Grid>
                 <Grid item sx={{ display: 'flex', gap: '1rem', alignItems: 'center', }} >
                     {userID ? (
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>

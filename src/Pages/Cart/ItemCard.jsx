@@ -16,7 +16,8 @@ const ItemCard = ({ items, index }) => {
     const [cartItems, setcartItems] = useState([])
     const [accessTokenUrl, setAccessTokenUrl] = useState([])
 
-    const [selectedQuantity, setSelectedQuantity] = useState(items?.quantity)
+    // const [selectedQuantity, setSelectedQuantity] = useState(items?.quantity)
+    const [selectedQuantity, setSelectedQuantity] = useState()
 
     useEffect(() => {
         setSelectedQuantity(items?.quantity)
