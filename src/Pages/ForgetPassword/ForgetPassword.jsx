@@ -21,7 +21,7 @@ const NewPassword = () => {
         }).then((res) => {
             console.log(res)
             toast.success("Password Updated Successfully!")
-            // navigate('/Login')
+            navigate('/Login')
         }).catch((err)=> {
             console.log("ERROR", err)
         })
