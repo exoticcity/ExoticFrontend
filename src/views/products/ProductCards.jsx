@@ -62,7 +62,6 @@ const ProductCards = ({ item, url, setUrl }) => {
         localStorage.setItem('inputQuantities', JSON.stringify(newQuantities));
     };
 
-
     if (user) {
         useEffect(() => {
             const incrementValue = JSON.stringify(inputQuantity[item?.id] || 0);
@@ -147,8 +146,6 @@ const ProductCards = ({ item, url, setUrl }) => {
         }
     };
 
-
-
     const handleDecrement = (id) => {
         const newQuantity = Number(inputQuantity[id] || 0) - 1;
         if (newQuantity >= 0) {
@@ -187,7 +184,7 @@ const ProductCards = ({ item, url, setUrl }) => {
         };
 
         fetchData();
-    }, [item?.ItemNo]);
+    }, [item?.ItemNo, data]);
 
 
     // USE-EFFECT
@@ -213,7 +210,7 @@ const ProductCards = ({ item, url, setUrl }) => {
 
     const formattedPrice = itemPrice?.price ? (Math.round(itemPrice.price * 100) / 100).toFixed(2) + " € HTVA" : "";
     console.log(formattedPrice);
-    
+
     return (
         <>
             <Grid container >
