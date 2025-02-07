@@ -19,13 +19,11 @@ const NewPassword = () => {
                 "Content-Type": "application/json",
             }
         }).then((res) => {
-            console.log("THI IS SUCCESS RES",res);
-
+            console.log(res)
             toast.success("Password Updated Successfully!")
-            // navigate('/Login')
-        }).catch((err) => {
-            console.log(err);
-            toast.error('Error', err)
+            navigate('/Login')
+        }).catch((err)=> {
+            console.log("ERROR", err)
         })
     };
 
