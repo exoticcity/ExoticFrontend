@@ -30,7 +30,7 @@ const ItemCard = ({ items, index }) => {
             }).catch((err) => {
                 console.log("err" + err);
             })
-    }, [setAccessTokenUrl, items])
+    }, [accessTokenUrl])
 
 
     useEffect(() => {
@@ -49,20 +49,26 @@ const ItemCard = ({ items, index }) => {
     }, [user, accessTokenUrl]);
 
     useEffect(() => {
-        if (accessTokenUrl) {
-            axios.get(`https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/itempic?$filter=ItemNo eq '${items?.product?.ItemNo}'`, {
-                headers: {
-                    Authorization: `Bearer ${accessTokenUrl}`,
-                },
-            })
-                .then((res) => {
-                    setPicture(res?.data?.value[0]?.picture);
-                })
-                .catch((err) => {
+        const fetchPicture = async () => {
+            if (accessTokenUrl && items?.product?.ItemNo) {
+                try {
+                    const res = await axios.get(
+                        `https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/itempic?$filter=ItemNo eq '${items.product.ItemNo}'`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${accessTokenUrl}`,
+                            },
+                        }
+                    );
+                    setPicture(res?.data?.value?.[0]?.picture);
+                } catch (err) {
                     console.error("Error:", err);
-                });
-        }
-    }, [accessTokenUrl, cartData]);
+                }
+            }
+        };
+
+        fetchPicture();
+    }, [accessTokenUrl, cartData, items?.product?.ItemNo]);
 
     useEffect(() => {
         if (items?.product?.ItemNo !== undefined || 0 && CustomerPG !== undefined || 0 && isIncrement[items?.product?.id] !== undefined || 0) {

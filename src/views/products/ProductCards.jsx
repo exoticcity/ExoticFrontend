@@ -20,12 +20,11 @@ const ProductCards = ({ item, url, setUrl }) => {
     const [isInputChanged, setIsInputChanged] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
     const [loading, setLoading] = useState(true);
-    
-
     const [postCart, setPostCart] = useState([])
 
+
     // USER-CONTEXT
-    const { data, currentPage, user, accessTokenUrl, isIncrement, setIsIncrement, cartData, setChange, cart, inputQuantity, setInputQuantity } = useContext(Context);
+    const { data, currentPage, user, isIncrement, setIsIncrement, inputQuantity, setInputQuantity, accessTokenUrl } = useContext(Context);
     let CustomerPG = localStorage.getItem('CustomerPriceGroup')
 
     // Initialize input quantity from local storage or set default
@@ -148,6 +147,8 @@ const ProductCards = ({ item, url, setUrl }) => {
         }
     };
 
+
+
     const handleDecrement = (id) => {
         const newQuantity = Number(inputQuantity[id] || 0) - 1;
         if (newQuantity >= 0) {
@@ -163,21 +164,31 @@ const ProductCards = ({ item, url, setUrl }) => {
         }
     };
 
-    useLayoutEffect(() => {
-        axios.get(`https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/itempic?$filter=ItemNo eq '${item?.ItemNo}'`, {
-            headers: {
-                Authorization: `Bearer ${accessTokenUrl}`,
-            },
-        })
-            .then((res) => {
-                setPicture(res?.data?.value[0]?.picture);
-            })
-            .catch((err) => {
-                console.error("Error:", err);
-            }).finally(() => {
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!item?.ItemNo) return; // Ensure ItemNo is present
+
+            try {
+                const response = await axios.get(
+                    `https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/itempic?$filter=ItemNo eq '${item.ItemNo}'`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessTokenUrl}`, // Replace with actual token
+                        },
+                    }
+                );
+                setPicture(response?.data?.value[0]?.picture);
+                console.log(response);
+            } catch (error) {
+                console.error("Error:", error);
+            } finally {
                 setLoading(false);
-            });
-    }, [accessTokenUrl, picture, item]);
+            }
+        };
+
+        fetchData();
+    }, [item?.ItemNo]);
+
 
     // USE-EFFECT
     useEffect(() => {
@@ -189,23 +200,29 @@ const ProductCards = ({ item, url, setUrl }) => {
         localStorage.setItem('newIncrement', JSON.stringify(isIncrement));
     }, [isIncrement]);
 
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
+    // if (!picture) {
+    //     return (
+    //         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    //             <CircularProgress />
+    //         </Box>
+    //     );
+    // }
+
+
+
 
     const formattedPrice = itemPrice?.price ? (Math.round(itemPrice.price * 100) / 100).toFixed(2) + " € HTVA" : "";
+    console.log(formattedPrice);
+    
     return (
         <>
             <Grid container >
                 <Card sx={{ height: '490px', width: '280px', display: 'flex', flexDirection: 'column', m: '15px' }}>
-                    <Link to={`/ProductsDescription/${item.id}`}>
+                    <Link to={`/ProductsDescription/${item.ItemNo}`}>
                         <CardMedia className='img' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                             <img
                                 src={item && picture ? `data:image/jpeg;base64,${picture?.replace(/"/g, '')}` : '/assets/jpeg/ExoticLogo.jpg'}
+                                // src={'/assets/jpeg/ExoticLogo.jpg'}
                                 alt=""
                             />
                         </CardMedia>

@@ -73,40 +73,52 @@ function App() {
     }
   };
 
+  console.log(customerPrice);
+  
+
   useEffect(() => {
     fetchCustomerPriceGroup();
   }, [user]);
 
   localStorage.setItem("CustomerPriceGroup", customerPrice)
 
-  // Empty dependency array means this runs once on component mount
   useEffect(() => {
-    axios.get("https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getAccessToken/")
-      .then((res) => {
-        setAccessTokenUrl(res.data.access_token)
-      }).catch((err) => {
-        console.log("err" + err);
-      })
-  }, [setAccessTokenUrl])
+    const fetchAccessToken = async () => {
+      try {
+        const res = await axios.get(
+          "https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getAccessToken/"
+        );
+        setAccessTokenUrl(res.data.access_token);
+      } catch (err) {
+        console.log("Error fetching access token:", err);
+      }
+    };
+
+    fetchAccessToken();
+  }, []);
 
   // Parent Categories
-  if (accessTokenUrl !== '') {
-    useEffect(() => {
-      axios.get(`https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/parentcategory`, {
-        headers: {
-          Authorization: `Bearer ${accessTokenUrl}`,
-        },
-      })
-        .then((res) => {
-          setParentCategory(res?.data?.value);
-        })
-        .catch((err) => {
-          console.error("Error:", err);
-        });
-    }, [accessTokenUrl]);
-  } else {
-    console.log("abc");
-  }
+  useEffect(() => {
+    const fetchParentCategories = async () => {
+      if (!accessTokenUrl) return;
+
+      try {
+        const res = await axios.get(
+          `https://api.businesscentral.dynamics.com/v2.0/7c885fa6-8571-4c76-9e28-8e51744cf57a/Live/ODataV4/Company('My%20Company')/parentcategory`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessTokenUrl}`,
+            },
+          }
+        );
+        setParentCategory(res?.data?.value || []);
+      } catch (err) {
+        console.error("Error fetching parent categories:", err);
+      }
+    };
+
+    fetchParentCategories();
+  }, [accessTokenUrl]);
 
   // const filteredURL = `${url}?ParentCategory=`
   const handleParentClick = (selectedDescription) => {

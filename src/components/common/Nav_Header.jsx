@@ -12,9 +12,9 @@ import Dropdown from './dropdown';
 import i18next from 'i18next';
 import { Context } from '../../App';
 import './Styles.css'
-const Nav_Header = ({isDrawerOpen, setDrawerOpen}) => {
+const Nav_Header = ({ isDrawerOpen, setDrawerOpen }) => {
     // USER-CONTEXT
-    const {  isBrand, setisBrand } = useContext(Context);
+    const { isBrand, setisBrand } = useContext(Context);
     const [isProduct, setisProduct] = useState(false)
 
     // Language Translation
@@ -32,14 +32,14 @@ const Nav_Header = ({isDrawerOpen, setDrawerOpen}) => {
                         <Box>
                             <Link to='/About' style={{ textDecoration: 'none' }}>
                                 <Typography onClick={() => { setisBrand(false); setisProduct(false); }}
-                                    sx={{ display: 'flex', fontFamily: 'Montserrat', alignItems: 'center', fontSize: '13px', color: '#5B5B5B',  textDecoration: 'none', cursor: 'pointer', }}>
+                                    sx={{ display: 'flex', fontFamily: 'Montserrat', alignItems: 'center', fontSize: '13px', color: '#5B5B5B', textDecoration: 'none', cursor: 'pointer', }}>
                                     {t('ABOUT US')}
                                 </Typography>
                             </Link>
                         </Box>
                         <Box >
                             <Typography sx={{ display: 'flex', fontFamily: 'Montserrat', alignItems: 'center', fontSize: '13px', color: '#5B5B5B' }} onClick={toggleProduct}>
-                                {t('PRODUCTS')}  <KeyboardArrowDownIcon sx={{fontSize: '20px'}}/>
+                                {t('PRODUCTS')}  <KeyboardArrowDownIcon sx={{ fontSize: '20px' }} />
                             </Typography>
                             {isProduct ? (
                                 <Box sx={{ backgroundColor: '#fff', border: '1px solid lightgrey', position: 'absolute', color: '#000', padding: '1rem', borderRadius: '4px', zIndex: 10, ml: '4rem', width: 'auto', height: 'auto', marginLeft: '-1rem' }}>

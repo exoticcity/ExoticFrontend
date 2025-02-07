@@ -50,6 +50,10 @@ const Nav_Search = () => {
                     <Link to="/">  <img src="/assets/jpeg/LOGO.jpg" style={{ width: '140px' }} alt="Logo" /> </Link>
                 </Grid>
                 <Grid item> <Nav_Header isDrawerOpen={isDrawerOpen} setDrawerOpen={setDrawerOpen} /> </Grid>
+                <Link to='/UploadImage'>
+                    <Button sx={{ fontSize: '11px', fontWeight: "600", backgroundColor: '#fff', color: '#000', transition: 'background-color 0.3s, color 0.3s', '&:hover': { backgroundColor: '#000', color: '#fff', }, }} variant='contained' size='small'>Upload Item Images</Button>
+                </Link>
+
                 <Grid item sx={{ display: 'flex', gap: '1rem', alignItems: 'center', }} >
                     {userID ? (
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
@@ -72,7 +76,6 @@ const Nav_Search = () => {
                             <ShoppingCartIcon sx={{ fontSize: '20px' }} onClick={handleCartClick} />
                         </Badge>
                     </Link>}
-
                 </Grid>
             </Grid>
             <Drawer anchor="left" open={isDrawerOpen} onClose={handleDrawerClose} >

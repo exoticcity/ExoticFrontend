@@ -17,6 +17,7 @@ import {
   OrderLines,
   Privacy,
   Terms,
+  UploadImage
 } from "../Pages";
 
 const AllRoutes = [
@@ -39,6 +40,7 @@ const AllRoutes = [
   { path: "/Ledger", component: Ledger },
   { path: "/OrderLines/:id", component: OrderLines },
   { path: "/Terms", component: Terms },
+  { path: "/UploadImage", component: UploadImage },
 ];
 
 export { AllRoutes };

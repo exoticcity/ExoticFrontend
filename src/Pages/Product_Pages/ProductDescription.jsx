@@ -21,7 +21,7 @@ const ProductDescription = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getProducts/?id=${id}`);
+                const res = await axios.get(`https://exoticcity-a0dfd0ddc0h2h9hb.northeurope-01.azurewebsites.net/items/getProducts?ItemNo=${id}`);
                 setProduct(res?.data?.results?.results[0]);
             } catch (err) {
                 console.error("Error fetching product:", err);
@@ -32,8 +32,6 @@ const ProductDescription = () => {
             fetchProduct();
         }
     }, [id, accessTokenUrl]);
-    console.log("ooooo", product);
-
 
     useEffect(() => {
         const fetchPicture = async () => {
@@ -116,6 +114,7 @@ const ProductDescription = () => {
             toast.success('Item added to cart successfully');
         }
     };
+    console.log(product);
 
 
     return (
@@ -144,7 +143,9 @@ const ProductDescription = () => {
             </Box>
             <Grid container sx={{ height: { xs: 'auto', sm: 'auto', lg: '100%' }, display: 'flex', width: '100%', justifyContent: 'center' }}>
                 <Grid item xs={12} sm={6} lg={4} >
-                    <img src={product && picture ? `data:image/jpeg;base64,${picture?.replace(/"/g, '')}` : '/assets/jpeg/ExoticLogo.jpg'}
+                    <img
+                        src={product && picture ? `data:image/jpeg;base64,${picture?.replace(/"/g, '')}` : '/assets/jpeg/ExoticLogo.jpg'}
+                        // src={''}
                         alt="" style={{ width: '100%', height: "80vh" }} />
                 </Grid>
                 <Grid item xs={12} sm={6} lg={6} sx={{ p: '20px' }}>
