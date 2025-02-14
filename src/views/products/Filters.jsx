@@ -20,6 +20,7 @@ function Filters({ url, setUrl }) {
         newUrl = newUrl.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
+        newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
         const separator = newUrl.includes('?') ? '&' : '?';
         setUrl(newUrl + `${separator}ParentCategory=${ptcategory}`);
 
@@ -28,14 +29,17 @@ function Filters({ url, setUrl }) {
             newUrl = newUrl.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
+            newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
             setUrl(newUrl + `&ItemCategoryCode=${Category}`);
         } if (subCategory) {
             let newUrl = url.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
+            newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
             setUrl(newUrl + `&ItemSubCategoryCode=${subCategory}`);
         } if (brands) {
             let newUrl = url.replace(/(\?|&)Brand=[^&]*/g, "");
+            newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
             const separator = newUrl.includes('?') ? '&' : '?';
             setUrl(newUrl + `${separator}Brand=${brands}`);
         }
