@@ -20,7 +20,6 @@ function Filters({ url, setUrl }) {
         newUrl = newUrl.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
-        newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
         const separator = newUrl.includes('?') ? '&' : '?';
         setUrl(newUrl + `${separator}ParentCategory=${ptcategory}`);
 
@@ -29,13 +28,11 @@ function Filters({ url, setUrl }) {
             newUrl = newUrl.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
-            newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
             setUrl(newUrl + `&ItemCategoryCode=${Category}`);
         } if (subCategory) {
             let newUrl = url.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
             newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
-            newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
             setUrl(newUrl + `&ItemSubCategoryCode=${subCategory}`);
         } if (brands) {
             let newUrl = url.replace(/(\?|&)Brand=[^&]*/g, "");
@@ -87,6 +84,7 @@ function Filters({ url, setUrl }) {
         newUrl = newUrl.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
+        newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
         const separator = newUrl.includes('?') ? '&' : '?';
         setUrl(newUrl + `${separator}ParentCategory=${newParentCategory}`);
         navigate(`/Products/${newParentCategory}/`)
@@ -101,6 +99,7 @@ function Filters({ url, setUrl }) {
         newUrl = newUrl.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
+        newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
         setUrl(newUrl + `&ItemCategoryCode=${newCategory}`);
         navigate(`/Products/${ptcategory}/${newCategory}`)
     };
@@ -112,6 +111,7 @@ function Filters({ url, setUrl }) {
         let newUrl = url.replace(/(\?|&)ItemSubCategoryCode=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)Brand=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
+        newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
         setUrl(newUrl + `&ItemSubCategoryCode=${newSubCategory}`);
         navigate(`/Products/${ptcategory}/${Category}/${newSubCategory}`)
     };
@@ -121,6 +121,7 @@ function Filters({ url, setUrl }) {
         setBrandIndex(newBrand);
         let newUrl = url.replace(/(\?|&)Brand=[^&]*/g, "");
         newUrl = newUrl.replace(/(\?|&)search=[^&]*/g, "");
+        newUrl = newUrl.replace(/(\?|&)limit=[^&]*/g, "");
         setUrl(newUrl + `&Brand=${newBrand}`);
         navigate(`/Products/${ptcategory}/${Category}/${subCategory}/${newBrand}`)
     };
